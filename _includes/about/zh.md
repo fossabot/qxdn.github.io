@@ -6,7 +6,7 @@
     - 1464238196@qq.com
     - 1464238196@whut.com
 - github:[qxdn](https://www.github.com/qxdn)
-- [简历]({{site.url}}/resources/qx_cv.pdf)
+- [简历](/resources/qx_cv.pdf)
 
 ## 学习经历
 - 2014.09 - 2017.07 [浙江省杭州市余杭高级中学](http://www.zjhzyg.net/)（高中）
