@@ -4,7 +4,7 @@ title: "用AlexNet实现DogsVsCats"
 subtitle: "记录第一次炼丹"
 date:  2020-10-23
 author: "qxdn"
-header-img: "img/default-post-bg"
+header-img: "img/default-post-bg.jpg"
 tags:
     - python
     - tensorflow
