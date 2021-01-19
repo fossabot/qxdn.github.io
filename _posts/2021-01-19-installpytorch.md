@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "毕业设计第一步"
+title: "毕业设计（一）环境搭建"
 subtitle: "安装CUDA cuDNN pytorch"
 date:  2021-01-19
 author: "qxdn"
@@ -52,4 +52,4 @@ conda install --use-local pytorch-1.7.1-py3.8_cuda110_cudnn8_0.tar.bz2
 ![verify](/img/in-post/GraduationProject/verify.png)
 
 ## 后记
-环境的搭建就到此为止，安装并不难，只是我没想到我尽然会连镜像源都下不动😩
+环境的搭建就到此为止，安装并不难，只是我没想到我尽然会连镜像源都下不动😩。后续视情况可能会使用GPU服务器，但是现在先在本地收集数据集和预先学习。
