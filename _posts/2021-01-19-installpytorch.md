@@ -34,7 +34,7 @@ tags:
 安装完成后可以在命令行里面使用`nvcc -V`看看结果。
 
 ## cuDNN安装
-cuDNN安装比较简单，首先进入[官网](https://developer.nvidia.com/rdp/cudnn-archive)，选择你安装的CUDA的对应版本即可。下载也需要进行注册，填一个调查问卷，但是因为我实在进不去，就使用迅雷接管下载链接之间下载。将解压后的`bin`、`include`、`lib`三个文件复制进入`C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0`即可。
+cuDNN安装比较简单，首先进入[官网](https://developer.nvidia.com/rdp/cudnn-archive)，选择你安装的CUDA的对应版本即可。下载也需要进行注册，填一个调查问卷，但是因为我实在进不去，就使用迅雷接管下载链接之间下载。将解压后的`bin`、`include`、`lib`三个文件复制进入`C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0`即可。我安装的版本是`8.0.4`
 
 
 ## pytorch安装
