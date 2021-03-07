@@ -36,6 +36,9 @@ bootstrap-vcpkg.bat
 vcpkg install darknet[full]:x64-windows
 ```
 ### 遇到的问题
+
+**事后得知，此处遇到的网络问题可以试一试校园网，校园网似乎对从外网下载文件有较好的效果**
+
 安装opencv时，需要从`raw.githubusercontent.com`下载东西，然而遇到了host问题。首先尝试修改了host，结果遇到了`SSL connect error`问题，于是在加了几个host发现还是失败了。遂尝试使用VPN代理，按照输出将`HTTP_PROXY`和`HTTPS_PROXY`加入到环境变量，依然不行。尝试直接在powershell中使用变量。
 ```powershell
 $env:HTTPS_PROXY="https://127.0.0.1:7890/"
@@ -81,7 +84,7 @@ vcpkg install darknet[opencv-base,cuda,cudnn]:x64-windows
 
 
 ## 编译darknet
-提前安装`ninja`并添加到环境变量
+提前安装[ninja](https://github.com/ninja-build/ninja)并添加到环境变量
 
 修改`Makefile`
 ```Makefile
@@ -90,7 +93,8 @@ CUDNN=1
 CUDNN_HALF=1
 OPENCV=1
 
-ARCH= -gencode arch=compute_61,code=sm_61 -gencode arch=compute_61,code=compute_61 #我是gtx1050，根据自己的修改
+#我是gtx1050，根据makefile里面的注释自己的修改
+ARCH= -gencode arch=compute_61,code=sm_61 -gencode arch=compute_61,code=compute_61 
 ```
 
 按照AlexeyAB的repo，执行如下代码，注意CMake的版本，过低将无法编译。注意下面的顺序，如果有问题需要清理一下缓存，不然会一直编译失败
