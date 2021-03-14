@@ -4,7 +4,6 @@ title: "Welcome to qxdn Blog"
 subtitle: "\"Hello World\""
 date:  2020-10-18
 author: "qxdn"
-header-img: "img/in-post/post-helloworld/helloworld-bg.jpg"
 tags:
     - 生活
 ---

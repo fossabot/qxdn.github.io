@@ -110,7 +110,7 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1
 ## 测试darknet
 
 ### 原图
-![origin](/img/in-post/GraduationProject/origin.jpg)
+![origin](/images/GraduationProject/origin.jpg)
 
 ```powershell
 darknet.exe detector test cfg/coco.data cfg/yolov4.cfg yolov4.weights origin.jpg  -thresh 0.25
@@ -317,7 +317,7 @@ car: 99%
 ```
 ### 结果
 可以看到预测结果，同时darknet里面也输出了GPU的信息
-![predictions](/img/in-post/GraduationProject/predictions.jpg)
+![predictions](/images/GraduationProject/predictions.jpg)
 
 ## 结论
 win10版本的darknet gpu版本安装完成。道路坎坷，记录下踩过的坑

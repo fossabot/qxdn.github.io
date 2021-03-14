@@ -4,7 +4,6 @@ title: "电赛准备"
 subtitle: "电赛准备期间的经历以及制作的一些项目"
 date: 2020-10-19 12:00:00
 author: "qxdn"
-header-img: "img/in-post/electronicDesignContestPrepare/bg.png"
 tags: 
     - 电赛
     - C
@@ -29,9 +28,9 @@ tags:
 
 实物图片
 -------------
-![风力摆](/img/in-post/electronicDesignContestPrepare/flb.gif)
-![二轮平衡车](/img/in-post/electronicDesignContestPrepare/balanceCar.gif)
-![XY写字机器人](/img/in-post/electronicDesignContestPrepare/XYWriter.gif)
+![风力摆](/images/electronicDesignContestPrepare/flb.gif)
+![二轮平衡车](/images/electronicDesignContestPrepare/balanceCar.gif)
+![XY写字机器人](/images/electronicDesignContestPrepare/XYWriter.gif)
 
 
 后记

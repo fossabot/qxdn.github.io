@@ -4,7 +4,6 @@ title: "电赛"
 subtitle: "正式电赛 模拟电磁曲射炮"
 date: 2020-10-19 14:00:00
 author: "qxdn"
-header-img: "img/in-post/electronicDesignContest/bg.jpg"
 tags: 
     - 电赛
     - C
@@ -21,7 +20,7 @@ tags:
 ## 题目要求
 题目的具体要求和测试结果见[这](https://www.nuedc-training.com.cn/index/news/details/new_id/153)
 
-![参考图片](/img/in-post/electronicDesignContest/problem.png)
+![参考图片](/images/electronicDesignContest/problem.png)
 
 ### 基本要求
   1. 电磁炮能够将弹丸射出炮口。
@@ -36,11 +35,11 @@ tags:
 
 ## 制作电磁炮
 使用漆包线包裹发射管，我们制作了电磁炮的炮管。使用Boost电路制作升压，电容来存储能量。关于控制电磁炮发射距离使用的是固定发射电压、调整发射角度的方法，使用的方法是使用MATLAB进行数据拟合。测量距离使用openmv中距离和像素的大小成反比的关系。系统结构图、DC-DC电路如下图所示。
-![系统结构图](/img/in-post/electronicDesignContest/structure.png)
-![DC-DC](/img/in-post/electronicDesignContest/DC-DC.png)
+![系统结构图](/images/electronicDesignContest/structure.png)
+![DC-DC](/images/electronicDesignContest/DC-DC.png)
 
 ## 实物
-![railgun](/img/in-post/electronicDesignContest/railgun.jpg)
+![railgun](/images/electronicDesignContest/railgun.jpg)
 
 ## 报告
 [报告](/resources/railgunReport.docx)
@@ -50,4 +49,4 @@ tags:
 
 ## 结果
 在省赛和国赛的时候都打了全十环（不得不说运气真好），然后公费去上海同济玩了几天。最终结果就是获得了一个H题的国一了，不算国家奖学金的话，这是我获得的第一个竞赛国奖。
-![同济现场](/img/in-post/electronicDesignContest/edc.jpg)
+![同济现场](/images/electronicDesignContest/edc.jpg)

@@ -4,7 +4,6 @@ title: "节能减排"
 subtitle: "基于光伏天窗的精细化设计和多感知控制的节能屋顶"
 date: 2020-10-19 23:00:00
 author: "qxdn"
-header-img: "img/in-post/energySavingContest/bg.jpg"
 tags: 
     - 节能减排
     - C
@@ -25,9 +24,9 @@ tags:
 
 ## 实物
 我们主要制作了[智能设计平台](http://101.133.235.188/)(现在应该上不去了)、手机控制平台和光伏屋顶。三个之间的通信主要是使用MQTT协议。
-![智能设计网页](/img/in-post/energySavingContest/design.png)
-![智能控制平台](/img/in-post/energySavingContest/controller.png)
-![光伏屋顶](/img/in-post/energySavingContest/roof.gif)
+![智能设计网页](/images/energySavingContest/design.png)
+![智能控制平台](/images/energySavingContest/controller.png)
+![光伏屋顶](/images/energySavingContest/roof.gif)
 
 ## 代码
 [智能设计平台](https://github.com/qxdn/sunbest)、[天窗控制平台](https://github.com/qxdn/WindowController)和[实物与8266代码](https://github.com/qxdn/EnergySaveRoof)因为疫情原因而且组员也不是很会因此实物代码比较老、但是8266的代码是最新的。
