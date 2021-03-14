@@ -4,13 +4,14 @@ title: "用AlexNet实现DogsVsCats"
 subtitle: "记录第一次炼丹"
 date:  2020-10-23
 author: "qxdn"
+cover: images/DogsVsCats/overload.png
 tags:
     - python
     - tensorflow
     - 机器学习
     - AlexNet
 ---
-AlexNet实现猫狗大战
+> AlexNet实现猫狗大战
 <!--more-->
 ## AlexNet 实现猫狗大战
 

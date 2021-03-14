@@ -4,7 +4,7 @@ title: "毕业设计（二）darknet编译"
 subtitle: "使用vcpkg编译darknet"
 date:  2021-03-05
 author: "qxdn"
-header-img: "img/default-post-bg.jpg"
+cover: "images/default-post-bg.jpg"
 tags:
     - 机器学习
     - 毕业设计
@@ -12,7 +12,7 @@ tags:
     - darknet
 ---
 
-win10编译darknet
+> win10编译darknet
 <!--more-->
 
 ## 前言

@@ -4,6 +4,7 @@ title: "电赛"
 subtitle: "正式电赛 模拟电磁曲射炮"
 date: 2020-10-19 14:00:00
 author: "qxdn"
+cover: images/electronicDesignContest/bg.jpg
 tags: 
     - 电赛
     - C

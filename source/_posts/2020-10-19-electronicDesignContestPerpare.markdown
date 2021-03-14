@@ -4,6 +4,7 @@ title: "电赛准备"
 subtitle: "电赛准备期间的经历以及制作的一些项目"
 date: 2020-10-19 12:00:00
 author: "qxdn"
+cover: images/electronicDesignContestPrepare/bg.png
 tags: 
     - 电赛
     - C
@@ -12,7 +13,7 @@ tags:
     - 硬件
 ---
 
-主要为实验室中的一些经历
+> 主要为实验室中的一些经历
 
 <!--more-->
 进入606实验室

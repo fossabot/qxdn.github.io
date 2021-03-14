@@ -4,13 +4,14 @@ title: "升级到WSL2"
 subtitle: "将WSL1升级到WSL2的踩坑记录"
 date:  2020-10-24
 author: "qxdn"
+cover: images/post-upgradeWSL/bg.png
 tags:
     - Windows
     - Linux
     - WSL
 ---
 
-将WSL1升级到WSL2
+> 将WSL1升级到WSL2
 <!--more-->
 
 ## 前言
