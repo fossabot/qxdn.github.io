@@ -17,6 +17,8 @@ tags:
 ## 电赛选题
 我作为组长和[李志豪](https://github.com/while0l1)、[任睿](https://github.com/renruiwhut)一起参加了2019年的电赛。说到组长的选择其实也是很随意，就是投骰子比小，最小的做组长。2019年的题目可以见[这里](https://www.nuedc-training.com.cn/index/news/details/new_id/154.html)，我们当时主要在F题和H题里面纠结，我主张F题，而李志豪强烈反对，因为我们缺少传感器，而且一时没有解决方法，因此我们选择了H题。
 
+<!--more-->
+
 ## 题目要求
 题目的具体要求和测试结果见[这](https://www.nuedc-training.com.cn/index/news/details/new_id/153)
 

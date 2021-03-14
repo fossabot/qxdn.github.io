@@ -10,6 +10,9 @@ tags:
     - WSL
 ---
 
+将WSL1升级到WSL2
+<!--more-->
+
 ## 前言
 因为一些个人原因，需要将原先的WSL1升级到WSL2，参考[微软文档](https://docs.microsoft.com/zh-cn/windows/wsl/install-win10)，记录踩坑
 
