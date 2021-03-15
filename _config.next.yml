@@ -1,0 +1,102 @@
+cache:
+  enable: false
+
+scheme: Gemini
+
+darkmode: true
+
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  archives: /archives/ || fa fa-archive
+
+avatar:
+  url: /images/avatar.jpg
+  rounded: true
+  rotated: true
+
+# Social Links
+# Usage: `Key: permalink || icon`
+# Key is the link label showing to end users.
+# Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
+social:
+  GitHub: https://github.com/qxdn || fab fa-github
+  E-Mail: mailto:qianxu1209@outlook.com || fa fa-envelope
+  #Weibo: https://weibo.com/yourname || fab fa-weibo
+  #Google: https://plus.google.com/yourname || fab fa-google
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
+  #FB Page: https://www.facebook.com/yourname || fab fa-facebook
+  #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
+  #YouTube: https://youtube.com/yourname || fab fa-youtube
+  #Instagram: https://instagram.com/yourname || fab fa-instagram
+  #Skype: skype:yourname?call|chat || fab fa-skype
+
+social_icons:
+  icons_only: true
+
+foot:
+  since: 2020
+
+post_edit:
+  enable: true
+  url: https://github.com/qxdn/qxdn.github.io/edit/master/source/
+
+
+codeblock:
+  copy_button:
+    enable: true
+    show_result: true
+
+back2top:
+  scrollpercent: true
+
+bookmark:
+  enable: true
+
+baidu_site_verification: code-zObFfpuvZ0
+baidu_push: true
+
+mediumzoom: true
+lazyload: true
+pangu: true
+
+comments:
+  active: disqus
+
+disqus:
+  enable: true
+  shortname: qxdn-blog
+  count: true
+
+add_this_id: ra-604eef74c3e2e9d1
+
+google_analytics:
+  tracking_id: UA-180828196-1
+
+local_search:
+  enable: true
+
+pace:
+  enable: true
+  # Themes list:
+  # big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple
+  # corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal
+  theme: loading-bar
+
+vendor:
+  plugins: jsdelivr
+
+# Define custom file paths.
+# Create your custom files in site directory `source/_data` and uncomment needed files below.
+custom_file_path:
+  #head: source/_data/head.swig
+  #header: source/_data/header.swig
+  #sidebar: source/_data/sidebar.swig
+  #postMeta: source/_data/post-meta.swig
+  #postBodyEnd: source/_data/post-body-end.swig
+  #footer: source/_data/footer.swig
+  #bodyEnd: source/_data/body-end.swig
+  #variable: source/_data/variables.styl
+  #mixin: source/_data/mixins.styl
+  #style: source/_data/styles.styl
