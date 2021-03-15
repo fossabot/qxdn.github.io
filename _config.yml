@@ -97,13 +97,20 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: melody
 
 search:
   path: search.xml
   field: post
   content: true
-  format: html
+
+markdown_it_plus:
+  plugins:
+    - plugin:
+      name: "@neilsustc/markdown-it-katex"
+      enable: true
+      options:
+        strict: false
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

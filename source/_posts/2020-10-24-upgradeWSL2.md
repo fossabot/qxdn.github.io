@@ -4,15 +4,13 @@ title: "升级到WSL2"
 subtitle: "将WSL1升级到WSL2的踩坑记录"
 date:  2020-10-24
 author: "qxdn"
-cover: https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/post-upgradeWSL/bg.png
+top_img: https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/post-upgradeWSL/bg.png
 tags:
     - Windows
     - Linux
     - WSL
 ---
 
-> 将WSL1升级到WSL2
-<!--more-->
 
 ## 前言
 因为一些个人原因，需要将原先的WSL1升级到WSL2，参考[微软文档](https://docs.microsoft.com/zh-cn/windows/wsl/install-win10)，记录踩坑

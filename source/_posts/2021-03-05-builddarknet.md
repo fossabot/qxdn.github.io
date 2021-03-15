@@ -4,7 +4,6 @@ title: "毕业设计（二）darknet编译"
 subtitle: "使用vcpkg编译darknet"
 date:  2021-03-05
 author: "qxdn"
-cover: "https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/default-post-bg.jpg"
 tags:
     - 机器学习
     - 毕业设计
@@ -12,8 +11,6 @@ tags:
     - darknet
 ---
 
-> win10编译darknet
-<!--more-->
 
 ## 前言
 寒假训练了4个版本的yolo，其中yolov4和yolov4-tiny是基于darknet的。由于都是在[colab](https://colab.research.google.com/notebooks/welcome.ipynb)上训练的，不好展示，所以打算在win10上跑一下，因此本文旨在win10编译darknet的踩坑记录。

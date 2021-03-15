@@ -4,15 +4,12 @@ title: "毕业设计（一）环境搭建"
 subtitle: "安装CUDA cuDNN pytorch"
 date:  2021-01-19
 author: "qxdn"
-cover: "https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/default-post-bg.jpg"
 tags:
     - 机器学习
     - 毕业设计
     - yolo
 ---
 
-> 毕设pytorch环境搭建
-<!--more-->
 
 ## 前言
 体验过CPU和GPU速度之后，就不会再想使用CPU版本的机器学习框架进行训练。

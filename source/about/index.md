@@ -1,7 +1,8 @@
 ---
-title: about
+title: about me
 date: 2021-03-15 15:16:40
 comments: false
+top_img: https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/about-bg.jpg
 ---
 > 天道酬勤
 
