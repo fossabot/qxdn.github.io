@@ -45,7 +45,7 @@ tags:
 ![railgun](/images/electronicDesignContest/railgun.jpg)
 
 ## 报告
-[报告](/resources/railgunReport.docx)
+[报告](/others/railgunReport.docx)
 
 ## 代码
 我们组的电赛代码在[这](https://github.com/qxdn/BIg-Ivan)，取名大伊万（笑）。这里面还包含一些训练时期的项目，都在git分支里面。

@@ -1,5 +1,5 @@
-cache:
-  enable: false
+
+read_more_btn: false
 
 scheme: Gemini
 
@@ -22,7 +22,7 @@ avatar:
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
   GitHub: https://github.com/qxdn || fab fa-github
-  E-Mail: mailto:qianxu1209@outlook.com || fa fa-envelope
+  E-Mail: mailto:1464238196@qq.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Google: https://plus.google.com/yourname || fab fa-google
   #Twitter: https://twitter.com/yourname || fab fa-twitter
@@ -76,13 +76,6 @@ google_analytics:
 
 local_search:
   enable: true
-
-pace:
-  enable: true
-  # Themes list:
-  # big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple
-  # corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal
-  theme: loading-bar
 
 vendor:
   plugins: jsdelivr
