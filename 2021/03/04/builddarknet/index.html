@@ -1,297 +1,34 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-  <meta name="baidu-site-verification" content="code-zObFfpuvZ0">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="毕业设计（二）darknet编译"><meta name="keywords" content="机器学习,毕业设计,yolo,darknet"><meta name="author" content="qxdn"><meta name="copyright" content="qxdn"><title>毕业设计（二）darknet编译 | qxdn Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://www.google-analytics.com"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"qianxu.run","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta name="description" content="win10编译darknet">
-<meta property="og:type" content="article">
-<meta property="og:title" content="毕业设计（二）darknet编译">
-<meta property="og:url" content="https://qianxu.run/2021/03/04/builddarknet/index.html">
-<meta property="og:site_name" content="qxdn Blog">
-<meta property="og:description" content="win10编译darknet">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://qianxu.run/images/GraduationProject/origin.jpg">
-<meta property="og:image" content="https://qianxu.run/images/GraduationProject/predictions.jpg">
-<meta property="article:published_time" content="2021-03-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-15T08:13:29.905Z">
-<meta property="article:author" content="qxdn">
-<meta property="article:tag" content="机器学习">
-<meta property="article:tag" content="毕业设计">
-<meta property="article:tag" content="yolo">
-<meta property="article:tag" content="darknet">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://qianxu.run/images/GraduationProject/origin.jpg">
-
-<link rel="canonical" href="https://qianxu.run/2021/03/04/builddarknet/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>毕业设计（二）darknet编译 | qxdn Blog</title>
-  
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180828196-1"></script>
-    <script>
-      if (CONFIG.hostname === location.hostname) {
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-180828196-1');
-      }
-    </script>
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">qxdn Blog</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://qianxu.run/2021/03/04/builddarknet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="qxdn">
-      <meta itemprop="description" content="钱旭的博客 | qxdn Blog">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qxdn Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          毕业设计（二）darknet编译<a href="https://github.com/qxdn/qxdn.github.io/edit/master/source/_posts/2021-03-05-builddarknet.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pencil-alt"></i></a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-05T00:00:00+08:00">2021-03-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-15 16:13:29" itemprop="dateModified" datetime="2021-03-15T16:13:29+08:00">2021-03-15</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2021/03/04/builddarknet/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/03/04/builddarknet/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <blockquote>
-<p>win10编译darknet</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>寒假训练了4个版本的yolo，其中yolov4和yolov4-tiny是基于darknet的。由于都是在<a target="_blank" rel="noopener" href="https://colab.research.google.com/notebooks/welcome.ipynb">colab</a>上训练的，不好展示，所以打算在win10上跑一下，因此本文旨在win10编译darknet的踩坑记录。</p>
-<h2 id="安装Visual-Studio"><a href="#安装Visual-Studio" class="headerlink" title="安装Visual Studio"></a>安装Visual Studio</h2><p>这个不用多说，安装2017或者2019版就行，需要开启英语语言</p>
-<h2 id="安装CUDA"><a href="#安装CUDA" class="headerlink" title="安装CUDA"></a>安装CUDA</h2><p>参考上一篇安装CUDA就行，需要CUDAv10.0以上，并且安装时要点VS集成</p>
-<h2 id="vcpkg安装"><a href="#vcpkg安装" class="headerlink" title="vcpkg安装"></a>vcpkg安装</h2><p>参考vcpkg的官方下载方式，<code>powershell</code>中执行如下命令</p>
+ga('create', 'UA-180828196-1', 'auto');
+ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85visual-studio"><span class="toc-number">2.</span> <span class="toc-text"> 安装Visual Studio</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85cuda"><span class="toc-number">3.</span> <span class="toc-text"> 安装CUDA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vcpkg%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text"> vcpkg安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vcpkg%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">5.</span> <span class="toc-text"> vcpkg安装依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text"> 遇到的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91darknet"><span class="toc-number">6.</span> <span class="toc-text"> 编译darknet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95darknet"><span class="toc-number">7.</span> <span class="toc-text"> 测试darknet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%BE"><span class="toc-number">7.1.</span> <span class="toc-text"> 原图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA"><span class="toc-number">7.2.</span> <span class="toc-text"> 输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">7.3.</span> <span class="toc-text"> 结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text"> 结论</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/avatar.jpg"></div><div class="author-info__name text-center">qxdn</div><div class="author-info__description text-center">钱旭的博客 | qxdn Blog</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/qxdn">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">8</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">19</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">qxdn的朋友们</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/WaterHyacinthInNANHU">WaterHyacinthInNANHU</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/while0l1">while0l1</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/Markhng">Markhng</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/default-bg.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">qxdn Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/about">About</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">毕业设计（二）darknet编译</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-05</time><span class="post-meta__separator">|</span><i class="fa fa-comment-o post-meta__icon" aria-hidden="true"></i><a href="/2021/03/04/builddarknet/#disqus_thread"><span class="disqus-comment-count" data-disqus-identifier="2021/03/04/builddarknet/"></span></a><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">4.2k</span><span class="post-meta__separator">|</span><span>Reading time: 24 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>寒假训练了4个版本的yolo，其中yolov4和yolov4-tiny是基于darknet的。由于都是在<a target="_blank" rel="noopener" href="https://colab.research.google.com/notebooks/welcome.ipynb">colab</a>上训练的，不好展示，所以打算在win10上跑一下，因此本文旨在win10编译darknet的踩坑记录。</p>
+<h2 id="安装visual-studio"><a class="markdownIt-Anchor" href="#安装visual-studio"></a> 安装Visual Studio</h2>
+<p>这个不用多说，安装2017或者2019版就行，需要开启英语语言</p>
+<h2 id="安装cuda"><a class="markdownIt-Anchor" href="#安装cuda"></a> 安装CUDA</h2>
+<p>参考上一篇安装CUDA就行，需要CUDAv10.0以上，并且安装时要点VS集成</p>
+<h2 id="vcpkg安装"><a class="markdownIt-Anchor" href="#vcpkg安装"></a> vcpkg安装</h2>
+<p>参考vcpkg的官方下载方式，<code>powershell</code>中执行如下命令</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/microsoft/vcpkg</span><br><span class="line"><span class="built_in">cd</span> vcpkg</span><br><span class="line">bootstrap<span class="literal">-vcpkg</span>.bat</span><br></pre></td></tr></table></figure>
 <p>如果执行<code>bootstrap-vcpkg.bat</code>时，下载<code>vcpkg.exe</code>遇到网络问题，可以直接去<code>release</code>里面下载二进制文件</p>
-<h2 id="vcpkg安装依赖"><a href="#vcpkg安装依赖" class="headerlink" title="vcpkg安装依赖"></a>vcpkg安装依赖</h2><p>根据AlexeyAB的repo说明，<code>powershell</code>执行如下命令</p>
+<h2 id="vcpkg安装依赖"><a class="markdownIt-Anchor" href="#vcpkg安装依赖"></a> vcpkg安装依赖</h2>
+<p>根据AlexeyAB的repo说明，<code>powershell</code>执行如下命令</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vcpkg install darknet[<span class="type">full</span>]:x64<span class="literal">-windows</span></span><br></pre></td></tr></table></figure>
-<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><p><strong>事后得知，此处遇到的网络问题可以试一试校园网，校园网似乎对从外网下载文件有较好的效果</strong></p>
+<h3 id="遇到的问题"><a class="markdownIt-Anchor" href="#遇到的问题"></a> 遇到的问题</h3>
+<p><strong>事后得知，此处遇到的网络问题可以试一试校园网，校园网似乎对从外网下载文件有较好的效果</strong></p>
 <p>安装opencv时，需要从<code>raw.githubusercontent.com</code>下载东西，然而遇到了host问题。首先尝试修改了host，结果遇到了<code>SSL connect error</code>问题，于是在加了几个host发现还是失败了。遂尝试使用VPN代理，按照输出将<code>HTTP_PROXY</code>和<code>HTTPS_PROXY</code>加入到环境变量，依然不行。尝试直接在powershell中使用变量。</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env:HTTPS_PROXY</span>=<span class="string">&quot;https://127.0.0.1:7890/&quot;</span></span><br><span class="line"><span class="variable">$env:HTTP_PROXY</span>=<span class="string">&quot;http://127.0.0.1:7890/&quot;</span></span><br></pre></td></tr></table></figure>
 <p>此时的staus输出为</p>
@@ -303,306 +40,35 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CMake Error at scripts&#x2F;cmake&#x2F;vcpkg_execute_build_process.cmake:144 (message):</span><br><span class="line">    Command failed: C:&#x2F;src&#x2F;vcpkg&#x2F;downloads&#x2F;tools&#x2F;cmake-3.19.2-windows&#x2F;cmake-3.19.2-win32-x86&#x2F;bin&#x2F;cmake.exe --build . --config Debug --target install -- -v -j9</span><br><span class="line">    Working Directory: C:&#x2F;src&#x2F;vcpkg&#x2F;buildtrees&#x2F;opencv4&#x2F;x64-windows-dbg</span><br><span class="line">    See logs for more information:</span><br><span class="line">      C:\src\vcpkg\buildtrees\opencv4\install-x64-windows-dbg-out.log</span><br><span class="line"></span><br><span class="line">Call Stack (most recent call first):</span><br><span class="line">  scripts&#x2F;cmake&#x2F;vcpkg_build_cmake.cmake:96 (vcpkg_execute_build_process)</span><br><span class="line">  scripts&#x2F;cmake&#x2F;vcpkg_install_cmake.cmake:27 (vcpkg_build_cmake)</span><br><span class="line">  ports&#x2F;opencv4&#x2F;portfile.cmake:385 (vcpkg_install_cmake)</span><br><span class="line">  scripts&#x2F;ports.cmake:133 (include)</span><br></pre></td></tr></table></figure>
 <p>尝试如下指令</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vcpkg install darknet[<span class="type">opencv</span>-<span class="type">base</span>,<span class="type">cuda</span>,<span class="type">cudnn</span>]:x64<span class="literal">-windows</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="编译darknet"><a href="#编译darknet" class="headerlink" title="编译darknet"></a>编译darknet</h2><p>提前安装<a target="_blank" rel="noopener" href="https://github.com/ninja-build/ninja">ninja</a>并添加到环境变量</p>
+<h2 id="编译darknet"><a class="markdownIt-Anchor" href="#编译darknet"></a> 编译darknet</h2>
+<p>提前安装<a target="_blank" rel="noopener" href="https://github.com/ninja-build/ninja">ninja</a>并添加到环境变量</p>
 <p>修改<code>Makefile</code></p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GPU=1</span><br><span class="line">CUDNN=1</span><br><span class="line">CUDNN_HALF=1</span><br><span class="line">OPENCV=1</span><br><span class="line"></span><br><span class="line"><span class="comment">#我是gtx1050，根据makefile里面的注释自己的修改</span></span><br><span class="line">ARCH= -gencode arch=compute_61,code=sm_61 -gencode arch=compute_61,code=compute_61 </span><br></pre></td></tr></table></figure>
-
 <p>按照AlexeyAB的repo，执行如下代码，注意CMake的版本，过低将无法编译。注意下面的顺序，如果有问题需要清理一下缓存，不然会一直编译失败</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env:VCPKG_ROOT</span>=<span class="string">&quot;vcpkg的位置&quot;</span></span><br><span class="line">git clone https://github.com/AlexeyAB/darknet</span><br><span class="line"><span class="built_in">cd</span> darknet</span><br><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="operator">-File</span> .\build.ps1</span><br></pre></td></tr></table></figure>
-
 <p>如果正确执行上述步骤的话，编译是不会出错的</p>
-<h2 id="测试darknet"><a href="#测试darknet" class="headerlink" title="测试darknet"></a>测试darknet</h2><h3 id="原图"><a href="#原图" class="headerlink" title="原图"></a>原图</h3><p><img data-src="/images/GraduationProject/origin.jpg" alt="origin"></p>
+<h2 id="测试darknet"><a class="markdownIt-Anchor" href="#测试darknet"></a> 测试darknet</h2>
+<h3 id="原图"><a class="markdownIt-Anchor" href="#原图"></a> 原图</h3>
+<p><img src="/images/GraduationProject/origin.jpg" alt="origin" /></p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">darknet.exe detector test cfg/coco.data cfg/yolov4.cfg yolov4.weights origin.jpg  <span class="literal">-thresh</span> <span class="number">0.25</span></span><br></pre></td></tr></table></figure>
-<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line">CUDA-version: 11000 (11000), cuDNN: 8.0.4, GPU count: 1  </span><br><span class="line"> OpenCV version: 4.5.1</span><br><span class="line"> 0 : compute_capability &#x3D; 610, cudnn_half &#x3D; 0, GPU: GeForce GTX 1050 </span><br><span class="line">net.optimized_memory &#x3D; 0 </span><br><span class="line">mini_batch &#x3D; 1, batch &#x3D; 8, time_steps &#x3D; 1, train &#x3D; 0</span><br><span class="line">   layer   filters  size&#x2F;strd(dil)      input                output</span><br><span class="line">   0 Create CUDA-stream - 0</span><br><span class="line"> Create cudnn-handle 0 </span><br><span class="line">conv     32       3 x 3&#x2F; 1    608 x 608 x   3 -&gt;  608 x 608 x  32 0.639 BF</span><br><span class="line">   1 conv     64       3 x 3&#x2F; 2    608 x 608 x  32 -&gt;  304 x 304 x  64 3.407 BF</span><br><span class="line">   2 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   3 route  1                                      -&gt;  304 x 304 x  64 </span><br><span class="line">   4 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   5 conv     32       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  32 0.379 BF</span><br><span class="line">   6 conv     64       3 x 3&#x2F; 1    304 x 304 x  32 -&gt;  304 x 304 x  64 3.407 BF</span><br><span class="line">   7 Shortcut Layer: 4,  wt &#x3D; 0, wn &#x3D; 0, outputs: 304 x 304 x  64 0.006 BF</span><br><span class="line">   8 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   9 route  8 2                                    -&gt;  304 x 304 x 128 </span><br><span class="line">  10 conv     64       1 x 1&#x2F; 1    304 x 304 x 128 -&gt;  304 x 304 x  64 1.514 BF</span><br><span class="line">  11 conv    128       3 x 3&#x2F; 2    304 x 304 x  64 -&gt;  152 x 152 x 128 3.407 BF</span><br><span class="line">  12 conv     64       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x  64 0.379 BF</span><br><span class="line">  13 route  11                                     -&gt;  152 x 152 x 128</span><br><span class="line">  14 conv     64       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x  64 0.379 BF</span><br><span class="line">  15 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  16 conv     64       3 x 3&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 1.703 BF</span><br><span class="line">  17 Shortcut Layer: 14,  wt &#x3D; 0, wn &#x3D; 0, outputs: 152 x 152 x  64 0.001 BF</span><br><span class="line">  18 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  19 conv     64       3 x 3&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 1.703 BF</span><br><span class="line">  20 Shortcut Layer: 17,  wt &#x3D; 0, wn &#x3D; 0, outputs: 152 x 152 x  64 0.001 BF</span><br><span class="line">  21 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  22 route  21 12                                  -&gt;  152 x 152 x 128 </span><br><span class="line">  23 conv    128       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x 128 0.757 BF</span><br><span class="line">  24 conv    256       3 x 3&#x2F; 2    152 x 152 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line">  25 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line">  26 route  24                                     -&gt;   76 x  76 x 256</span><br><span class="line">  27 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line">  28 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  29 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  30 Shortcut Layer: 27,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  31 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  32 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  33 Shortcut Layer: 30,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  34 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  35 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  36 Shortcut Layer: 33,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  37 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  38 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  39 Shortcut Layer: 36,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  40 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  41 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  42 Shortcut Layer: 39,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  43 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  44 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  45 Shortcut Layer: 42,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  46 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  47 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  48 Shortcut Layer: 45,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  49 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  50 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  51 Shortcut Layer: 48,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  52 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  53 route  52 25                                  -&gt;   76 x  76 x 256 </span><br><span class="line">  54 conv    256       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 256 0.757 BF</span><br><span class="line">  55 conv    512       3 x 3&#x2F; 2     76 x  76 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line">  56 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line">  57 route  55                                     -&gt;   38 x  38 x 512</span><br><span class="line">  58 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line">  59 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  60 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  61 Shortcut Layer: 58,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  62 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  63 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  64 Shortcut Layer: 61,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  65 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  66 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  67 Shortcut Layer: 64,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  68 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  69 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  70 Shortcut Layer: 67,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  71 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  72 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  73 Shortcut Layer: 70,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  74 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  75 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  76 Shortcut Layer: 73,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  77 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  78 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  79 Shortcut Layer: 76,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  80 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  81 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  82 Shortcut Layer: 79,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  83 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  84 route  83 56                                  -&gt;   38 x  38 x 512 </span><br><span class="line">  85 conv    512       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 512 0.757 BF</span><br><span class="line">  86 conv   1024       3 x 3&#x2F; 2     38 x  38 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line">  87 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line">  88 route  86                                     -&gt;   19 x  19 x1024</span><br><span class="line">  89 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line">  90 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  91 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  92 Shortcut Layer: 89,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  93 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  94 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  95 Shortcut Layer: 92,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  96 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  97 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  98 Shortcut Layer: 95,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  99 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line"> 100 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line"> 101 Shortcut Layer: 98,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line"> 102 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line"> 103 route  102 87                                 -&gt;   19 x  19 x1024</span><br><span class="line"> 104 conv   1024       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x1024 0.757 BF</span><br><span class="line"> 105 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 106 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 107 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 108 max                5x 5&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.005 BF</span><br><span class="line"> 109 route  107                                            -&gt;   19 x  19 x 512</span><br><span class="line"> 110 max                9x 9&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.015 BF</span><br><span class="line"> 111 route  107                                            -&gt;   19 x  19 x 512</span><br><span class="line"> 112 max               13x13&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.031 BF</span><br><span class="line"> 113 route  112 110 108 107                        -&gt;   19 x  19 x2048</span><br><span class="line"> 114 conv    512       1 x 1&#x2F; 1     19 x  19 x2048 -&gt;   19 x  19 x 512 0.757 BF</span><br><span class="line"> 115 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 116 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 117 conv    256       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 256 0.095 BF</span><br><span class="line"> 118 upsample                 2x    19 x  19 x 256 -&gt;   38 x  38 x 256</span><br><span class="line"> 119 route  85                                     -&gt;   38 x  38 x 512</span><br><span class="line"> 120 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 121 route  120 118                                -&gt;   38 x  38 x 512 </span><br><span class="line"> 122 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 123 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 124 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 125 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 126 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 127 conv    128       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 128 0.095 BF</span><br><span class="line"> 128 upsample                 2x    38 x  38 x 128 -&gt;   76 x  76 x 128</span><br><span class="line"> 129 route  54                                     -&gt;   76 x  76 x 256</span><br><span class="line"> 130 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 131 route  130 128                                -&gt;   76 x  76 x 256</span><br><span class="line"> 132 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 133 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 134 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 135 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 136 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 137 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 138 conv    255       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 255 0.754 BF</span><br><span class="line"> 139 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.20</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line"> 140 route  136                                            -&gt;   76 x  76 x 128</span><br><span class="line"> 141 conv    256       3 x 3&#x2F; 2     76 x  76 x 128 -&gt;   38 x  38 x 256 0.852 BF</span><br><span class="line"> 142 route  141 126                                -&gt;   38 x  38 x 512 </span><br><span class="line"> 143 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 144 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 145 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 146 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 147 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 148 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 149 conv    255       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 255 0.377 BF</span><br><span class="line"> 150 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.10</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line"> 151 route  147                                            -&gt;   38 x  38 x 256</span><br><span class="line"> 152 conv    512       3 x 3&#x2F; 2     38 x  38 x 256 -&gt;   19 x  19 x 512 0.852 BF</span><br><span class="line"> 153 route  152 116                                -&gt;   19 x  19 x1024</span><br><span class="line"> 154 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 155 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 156 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 157 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 158 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 159 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 160 conv    255       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 255 0.189 BF</span><br><span class="line"> 161 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.05</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line">Total BFLOPS 128.459</span><br><span class="line">avg_outputs &#x3D; 1068395</span><br><span class="line"> Allocate additional workspace_size &#x3D; 52.43 MB</span><br><span class="line">Loading weights from yolov4.weights...</span><br><span class="line"> seen 64, trained: 32032 K-images (500 Kilo-batches_64)</span><br><span class="line">Done! Loaded 162 layers from weights-file </span><br><span class="line"> Detection layer: 139 - type &#x3D; 28 </span><br><span class="line"> Detection layer: 150 - type &#x3D; 28 </span><br><span class="line"> Detection layer: 161 - type &#x3D; 28</span><br><span class="line">origin.jpg: Predicted in 184.923000 milli-seconds.</span><br><span class="line">person: 98%</span><br><span class="line">car: 94%</span><br><span class="line">truck: 31%</span><br><span class="line">car: 88%</span><br><span class="line">car: 99%</span><br><span class="line">person: 99%</span><br><span class="line">person: 37%</span><br><span class="line">car: 99%</span><br><span class="line">bus: 57%</span><br><span class="line">truck: 60%</span><br><span class="line">car: 99%</span><br></pre></td></tr></table></figure>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>可以看到预测结果，同时darknet里面也输出了GPU的信息<br><img data-src="/images/GraduationProject/predictions.jpg" alt="predictions"></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>win10版本的darknet gpu版本安装完成。道路坎坷，记录下踩过的坑</p>
-
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1/" rel="tag"># 毕业设计</a>
-              <a href="/tags/yolo/" rel="tag"># yolo</a>
-              <a href="/tags/darknet/" rel="tag"># darknet</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/01/18/installpytorch/" rel="prev" title="毕业设计（一）环境搭建">
-      <i class="fa fa-chevron-left"></i> 毕业设计（一）环境搭建
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-    
-  <div class="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Visual-Studio"><span class="nav-number">2.</span> <span class="nav-text">安装Visual Studio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85CUDA"><span class="nav-number">3.</span> <span class="nav-text">安装CUDA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vcpkg%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">vcpkg安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vcpkg%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="nav-number">5.</span> <span class="nav-text">vcpkg安装依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">5.1.</span> <span class="nav-text">遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91darknet"><span class="nav-number">6.</span> <span class="nav-text">编译darknet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95darknet"><span class="nav-number">7.</span> <span class="nav-text">测试darknet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%9B%BE"><span class="nav-number">7.1.</span> <span class="nav-text">原图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">7.2.</span> <span class="nav-text">输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">7.3.</span> <span class="nav-text">结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">8.</span> <span class="nav-text">结论</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="qxdn"
-      src="/images/avatar.jpg">
-  <p class="site-author-name" itemprop="name">qxdn</p>
-  <div class="site-description" itemprop="description">钱旭的博客 | qxdn Blog</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">8</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">19</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/qxdn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qxdn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:1464238196@qq.com" title="E-Mail → mailto:1464238196@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
-      </span>
-  </div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">qxdn</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">28k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">25 分钟</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
-  </div>
-  <div class="addthis_inline_share_toolbox">
-    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-604eef74c3e2e9d1" async="async"></script>
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-<script src="/js/bookmark.js"></script>
-
-
-
-
-  
-  <script>
-    (function(){
-      var canonicalURL, curProtocol;
-      //Get the <link> tag
-      var x=document.getElementsByTagName("link");
-		//Find the last canonical URL
-		if(x.length > 0){
-			for (i=0;i<x.length;i++){
-				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
-					canonicalURL=x[i].href;
-				}
-			}
-		}
-    //Get protocol
-	    if (!canonicalURL){
-	    	curProtocol = window.location.protocol.split(':')[0];
-	    }
-	    else{
-	    	curProtocol = canonicalURL.split(':')[0];
-	    }
-      //Get current URL if the canonical URL does not exist
-	    if (!canonicalURL) canonicalURL = window.location.href;
-	    //Assign script content. Replace current URL with the canonical URL
-      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
-  </script>
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://qxdn-blog.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  var disqus_config = function() {
-    this.page.url = "https://qianxu.run/2021/03/04/builddarknet/";
-    this.page.identifier = "2021/03/04/builddarknet/";
-    this.page.title = "毕业设计（二）darknet编译";
-    };
-  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://qxdn-blog.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  });
-</script>
-
-</body>
-</html>
+<h3 id="输出"><a class="markdownIt-Anchor" href="#输出"></a> 输出</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br></pre></td><td class="code"><pre><span class="line">CUDA-version: 11000 (11000), cuDNN: 8.0.4, GPU count: 1  </span><br><span class="line"> OpenCV version: 4.5.1</span><br><span class="line"> 0 : compute_capability &#x3D; 610, cudnn_half &#x3D; 0, GPU: GeForce GTX 1050 </span><br><span class="line">net.optimized_memory &#x3D; 0 </span><br><span class="line">mini_batch &#x3D; 1, batch &#x3D; 8, time_steps &#x3D; 1, train &#x3D; 0</span><br><span class="line">   layer   filters  size&#x2F;strd(dil)      input                output</span><br><span class="line">   0 Create CUDA-stream - 0</span><br><span class="line"> Create cudnn-handle 0 </span><br><span class="line">conv     32       3 x 3&#x2F; 1    608 x 608 x   3 -&gt;  608 x 608 x  32 0.639 BF</span><br><span class="line">   1 conv     64       3 x 3&#x2F; 2    608 x 608 x  32 -&gt;  304 x 304 x  64 3.407 BF</span><br><span class="line">   2 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   3 route  1                                      -&gt;  304 x 304 x  64 </span><br><span class="line">   4 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   5 conv     32       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  32 0.379 BF</span><br><span class="line">   6 conv     64       3 x 3&#x2F; 1    304 x 304 x  32 -&gt;  304 x 304 x  64 3.407 BF</span><br><span class="line">   7 Shortcut Layer: 4,  wt &#x3D; 0, wn &#x3D; 0, outputs: 304 x 304 x  64 0.006 BF</span><br><span class="line">   8 conv     64       1 x 1&#x2F; 1    304 x 304 x  64 -&gt;  304 x 304 x  64 0.757 BF</span><br><span class="line">   9 route  8 2                                    -&gt;  304 x 304 x 128 </span><br><span class="line">  10 conv     64       1 x 1&#x2F; 1    304 x 304 x 128 -&gt;  304 x 304 x  64 1.514 BF</span><br><span class="line">  11 conv    128       3 x 3&#x2F; 2    304 x 304 x  64 -&gt;  152 x 152 x 128 3.407 BF</span><br><span class="line">  12 conv     64       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x  64 0.379 BF</span><br><span class="line">  13 route  11                                     -&gt;  152 x 152 x 128</span><br><span class="line">  14 conv     64       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x  64 0.379 BF</span><br><span class="line">  15 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  16 conv     64       3 x 3&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 1.703 BF</span><br><span class="line">  17 Shortcut Layer: 14,  wt &#x3D; 0, wn &#x3D; 0, outputs: 152 x 152 x  64 0.001 BF</span><br><span class="line">  18 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  19 conv     64       3 x 3&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 1.703 BF</span><br><span class="line">  20 Shortcut Layer: 17,  wt &#x3D; 0, wn &#x3D; 0, outputs: 152 x 152 x  64 0.001 BF</span><br><span class="line">  21 conv     64       1 x 1&#x2F; 1    152 x 152 x  64 -&gt;  152 x 152 x  64 0.189 BF</span><br><span class="line">  22 route  21 12                                  -&gt;  152 x 152 x 128 </span><br><span class="line">  23 conv    128       1 x 1&#x2F; 1    152 x 152 x 128 -&gt;  152 x 152 x 128 0.757 BF</span><br><span class="line">  24 conv    256       3 x 3&#x2F; 2    152 x 152 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line">  25 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line">  26 route  24                                     -&gt;   76 x  76 x 256</span><br><span class="line">  27 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line">  28 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  29 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  30 Shortcut Layer: 27,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  31 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  32 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  33 Shortcut Layer: 30,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  34 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  35 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  36 Shortcut Layer: 33,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  37 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  38 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  39 Shortcut Layer: 36,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  40 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  41 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  42 Shortcut Layer: 39,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  43 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  44 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  45 Shortcut Layer: 42,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  46 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  47 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  48 Shortcut Layer: 45,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  49 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  50 conv    128       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 1.703 BF</span><br><span class="line">  51 Shortcut Layer: 48,  wt &#x3D; 0, wn &#x3D; 0, outputs:  76 x  76 x 128 0.001 BF</span><br><span class="line">  52 conv    128       1 x 1&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 128 0.189 BF</span><br><span class="line">  53 route  52 25                                  -&gt;   76 x  76 x 256 </span><br><span class="line">  54 conv    256       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 256 0.757 BF</span><br><span class="line">  55 conv    512       3 x 3&#x2F; 2     76 x  76 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line">  56 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line">  57 route  55                                     -&gt;   38 x  38 x 512</span><br><span class="line">  58 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line">  59 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  60 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  61 Shortcut Layer: 58,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  62 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  63 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  64 Shortcut Layer: 61,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  65 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  66 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  67 Shortcut Layer: 64,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  68 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  69 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  70 Shortcut Layer: 67,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  71 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  72 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  73 Shortcut Layer: 70,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  74 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  75 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  76 Shortcut Layer: 73,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  77 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  78 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  79 Shortcut Layer: 76,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  80 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  81 conv    256       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 1.703 BF</span><br><span class="line">  82 Shortcut Layer: 79,  wt &#x3D; 0, wn &#x3D; 0, outputs:  38 x  38 x 256 0.000 BF</span><br><span class="line">  83 conv    256       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 256 0.189 BF</span><br><span class="line">  84 route  83 56                                  -&gt;   38 x  38 x 512 </span><br><span class="line">  85 conv    512       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 512 0.757 BF</span><br><span class="line">  86 conv   1024       3 x 3&#x2F; 2     38 x  38 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line">  87 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line">  88 route  86                                     -&gt;   19 x  19 x1024</span><br><span class="line">  89 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line">  90 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  91 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  92 Shortcut Layer: 89,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  93 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  94 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  95 Shortcut Layer: 92,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  96 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line">  97 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line">  98 Shortcut Layer: 95,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line">  99 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line"> 100 conv    512       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 1.703 BF</span><br><span class="line"> 101 Shortcut Layer: 98,  wt &#x3D; 0, wn &#x3D; 0, outputs:  19 x  19 x 512 0.000 BF</span><br><span class="line"> 102 conv    512       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.189 BF</span><br><span class="line"> 103 route  102 87                                 -&gt;   19 x  19 x1024</span><br><span class="line"> 104 conv   1024       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x1024 0.757 BF</span><br><span class="line"> 105 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 106 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 107 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 108 max                5x 5&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.005 BF</span><br><span class="line"> 109 route  107                                            -&gt;   19 x  19 x 512</span><br><span class="line"> 110 max                9x 9&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.015 BF</span><br><span class="line"> 111 route  107                                            -&gt;   19 x  19 x 512</span><br><span class="line"> 112 max               13x13&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 512 0.031 BF</span><br><span class="line"> 113 route  112 110 108 107                        -&gt;   19 x  19 x2048</span><br><span class="line"> 114 conv    512       1 x 1&#x2F; 1     19 x  19 x2048 -&gt;   19 x  19 x 512 0.757 BF</span><br><span class="line"> 115 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 116 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 117 conv    256       1 x 1&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x 256 0.095 BF</span><br><span class="line"> 118 upsample                 2x    19 x  19 x 256 -&gt;   38 x  38 x 256</span><br><span class="line"> 119 route  85                                     -&gt;   38 x  38 x 512</span><br><span class="line"> 120 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 121 route  120 118                                -&gt;   38 x  38 x 512 </span><br><span class="line"> 122 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 123 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 124 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 125 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 126 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 127 conv    128       1 x 1&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 128 0.095 BF</span><br><span class="line"> 128 upsample                 2x    38 x  38 x 128 -&gt;   76 x  76 x 128</span><br><span class="line"> 129 route  54                                     -&gt;   76 x  76 x 256</span><br><span class="line"> 130 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 131 route  130 128                                -&gt;   76 x  76 x 256</span><br><span class="line"> 132 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 133 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 134 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 135 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 136 conv    128       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 128 0.379 BF</span><br><span class="line"> 137 conv    256       3 x 3&#x2F; 1     76 x  76 x 128 -&gt;   76 x  76 x 256 3.407 BF</span><br><span class="line"> 138 conv    255       1 x 1&#x2F; 1     76 x  76 x 256 -&gt;   76 x  76 x 255 0.754 BF</span><br><span class="line"> 139 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.20</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line"> 140 route  136                                            -&gt;   76 x  76 x 128</span><br><span class="line"> 141 conv    256       3 x 3&#x2F; 2     76 x  76 x 128 -&gt;   38 x  38 x 256 0.852 BF</span><br><span class="line"> 142 route  141 126                                -&gt;   38 x  38 x 512 </span><br><span class="line"> 143 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 144 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 145 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 146 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 147 conv    256       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 256 0.379 BF</span><br><span class="line"> 148 conv    512       3 x 3&#x2F; 1     38 x  38 x 256 -&gt;   38 x  38 x 512 3.407 BF</span><br><span class="line"> 149 conv    255       1 x 1&#x2F; 1     38 x  38 x 512 -&gt;   38 x  38 x 255 0.377 BF</span><br><span class="line"> 150 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.10</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line"> 151 route  147                                            -&gt;   38 x  38 x 256</span><br><span class="line"> 152 conv    512       3 x 3&#x2F; 2     38 x  38 x 256 -&gt;   19 x  19 x 512 0.852 BF</span><br><span class="line"> 153 route  152 116                                -&gt;   19 x  19 x1024</span><br><span class="line"> 154 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 155 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 156 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 157 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 158 conv    512       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 512 0.379 BF</span><br><span class="line"> 159 conv   1024       3 x 3&#x2F; 1     19 x  19 x 512 -&gt;   19 x  19 x1024 3.407 BF</span><br><span class="line"> 160 conv    255       1 x 1&#x2F; 1     19 x  19 x1024 -&gt;   19 x  19 x 255 0.189 BF</span><br><span class="line"> 161 yolo</span><br><span class="line">[yolo] params: iou loss: ciou (4), iou_norm: 0.07, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.05</span><br><span class="line">nms_kind: greedynms (1), beta &#x3D; 0.600000</span><br><span class="line">Total BFLOPS 128.459</span><br><span class="line">avg_outputs &#x3D; 1068395</span><br><span class="line"> Allocate additional workspace_size &#x3D; 52.43 MB</span><br><span class="line">Loading weights from yolov4.weights...</span><br><span class="line"> seen 64, trained: 32032 K-images (500 Kilo-batches_64)</span><br><span class="line">Done! Loaded 162 layers from weights-file </span><br><span class="line"> Detection layer: 139 - type &#x3D; 28 </span><br><span class="line"> Detection layer: 150 - type &#x3D; 28 </span><br><span class="line"> Detection layer: 161 - type &#x3D; 28</span><br><span class="line">origin.jpg: Predicted in 184.923000 milli-seconds.</span><br><span class="line">person: 98%</span><br><span class="line">car: 94%</span><br><span class="line">truck: 31%</span><br><span class="line">car: 88%</span><br><span class="line">car: 99%</span><br><span class="line">person: 99%</span><br><span class="line">person: 37%</span><br><span class="line">car: 99%</span><br><span class="line">bus: 57%</span><br><span class="line">truck: 60%</span><br><span class="line">car: 99%</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a class="markdownIt-Anchor" href="#结果"></a> 结果</h3>
+<p>可以看到预测结果，同时darknet里面也输出了GPU的信息<br />
+<img src="/images/GraduationProject/predictions.jpg" alt="predictions" /></p>
+<h2 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h2>
+<p>win10版本的darknet gpu版本安装完成。道路坎坷，记录下踩过的坑</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">qxdn</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://qianxu.run/2021/03/04/builddarknet/">https://qianxu.run/2021/03/04/builddarknet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1/">毕业设计</a><a class="post-meta__tags" href="/tags/yolo/">yolo</a><a class="post-meta__tags" href="/tags/darknet/">darknet</a></div><div class="addthis_inline_share_toolbox pull-right"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-604eef74c3e2e9d1" async></script><nav id="pagination"><div class="next-post pull-right"><a href="/2021/01/18/installpytorch/"><span>毕业设计（一）环境搭建</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'https://qianxu.run/2021/03/04/builddarknet/';
+  this.page.identifier = '2021/03/04/builddarknet/';
+  this.page.title = '毕业设计（二）darknet编译';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'qxdn-blog' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script><script id="dsq-count-scr" src="https://qxdn-blog.disqus.com/count.js" async></script></div></div><footer class="footer-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/default-bg.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2020 - 2021 By qxdn</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script src="/js/search/local-search.js"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
