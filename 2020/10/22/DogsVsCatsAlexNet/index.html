@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="baidu-site-verification" content="code-zObFfpuvZ0">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"qianxu.run","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="AlexNet实现猫狗大战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用AlexNet实现DogsVsCats">
+<meta property="og:url" content="https://qianxu.run/2020/10/22/DogsVsCatsAlexNet/index.html">
+<meta property="og:site_name" content="qxdn Blog">
+<meta property="og:description" content="AlexNet实现猫狗大战">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qianxu.run/images/DogsVsCats/overload.png">
+<meta property="og:image" content="https://qianxu.run/images/DogsVsCats/output_7_0.svg">
+<meta property="og:image" content="https://qianxu.run/images/DogsVsCats/output_16_0.svg">
+<meta property="og:image" content="https://qianxu.run/images/DogsVsCats/output_17_0.svg">
+<meta property="og:image" content="https://qianxu.run/images/DogsVsCats/output_22_0.svg">
+<meta property="article:published_time" content="2020-10-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-15T08:13:29.905Z">
+<meta property="article:author" content="qxdn">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="tensorflow">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="AlexNet">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qianxu.run/images/DogsVsCats/overload.png">
+
+<link rel="canonical" href="https://qianxu.run/2020/10/22/DogsVsCatsAlexNet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>用AlexNet实现DogsVsCats | qxdn Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180828196-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-180828196-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">qxdn Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://qianxu.run/2020/10/22/DogsVsCatsAlexNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qxdn">
+      <meta itemprop="description" content="钱旭的博客 | qxdn Blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qxdn Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用AlexNet实现DogsVsCats<a href="https://github.com/qxdn/qxdn.github.io/edit/master/source/_posts/2020-10-23-DogsVsCatsAlexNet.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pencil-alt"></i></a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-23 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-23T00:00:00+08:00">2020-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-15 16:13:29" itemprop="dateModified" datetime="2021-03-15T16:13:29+08:00">2021-03-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/10/22/DogsVsCatsAlexNet/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/10/22/DogsVsCatsAlexNet/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>AlexNet实现猫狗大战</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="AlexNet-实现猫狗大战"><a href="#AlexNet-实现猫狗大战" class="headerlink" title="AlexNet 实现猫狗大战"></a>AlexNet 实现猫狗大战</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>早就听说过tensorflow的大名，但一直没有时间仔细研究，而且一直缺少数据集，也就没怎么了解。同时因为那tensorflow1的复杂静态图一直劝退。如今有了时间，而且tensorflow2更加易懂，因此仔细研究了一下，也就是第一次炼丹。首先是在<a target="_blank" rel="noopener" href="https://www.kaggle.com/">kaggle</a>下载数据集就难到我了，没想到翻了墙还被困在手机号验证。最后只能借助于微软提供的数据集下载。最开始用自己的CPU跑又慢又卡，自从我换了硬盘加了内存以来，好久都没有这么卡过了。</p>
+<p><img data-src="/images/DogsVsCats/overload.png" alt="overload"></p>
+<p>随后换上了Google的<a target="_blank" rel="noopener" href="https://colab.research.google.com/notebooks/intro.ipynb#">colab</a>,用了免费GPU才知道GPU的好。</p>
+<blockquote>
+<p>以下正文</p>
+</blockquote>
+<h2 id="1、数据准备"><a href="#1、数据准备" class="headerlink" title="1、数据准备"></a>1、数据准备</h2><p>在Colab上需要下载数据和准备环境，已经将数据上传到了Github</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">!pip install tensorflow</span><br><span class="line">!wget https://github.com/qxdn/DogsVsCats/releases/download/v1<span class="number">.0</span><span class="number">.0</span>/data.<span class="built_in">zip</span></span><br><span class="line">!unzip data.<span class="built_in">zip</span></span><br><span class="line">!rm -rf data.<span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+
+<p>AlexNet的输入是<code>[227,227,3]</code>，因此要对输入进行预处理，使得符合规范，同时还需要进行贴标签(dog=1,cat=0)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers,models</span><br><span class="line"></span><br><span class="line">BATCH_SIZE = <span class="number">125</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_image</span>(<span class="params">img_path,size=(<span class="params"><span class="number">227</span>,<span class="number">227</span></span>)</span>):</span></span><br><span class="line">    label = tf.constant(<span class="number">0</span>,tf.int8) <span class="keyword">if</span> tf.strings.regex_full_match(img_path,<span class="string">&quot;.*cat.*&quot;</span>) \</span><br><span class="line">            <span class="keyword">else</span> tf.constant(<span class="number">1</span>,tf.int8)</span><br><span class="line">    img = tf.io.read_file(img_path)</span><br><span class="line">    img = tf.image.decode_jpeg(img) </span><br><span class="line">    img = tf.image.resize(img,size)/<span class="number">255.0</span>  <span class="comment">#转float要归一</span></span><br><span class="line">    <span class="keyword">return</span>(img,label)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用并行化预处理num_parallel_calls 和预存数据prefetch来提升性能</span></span><br><span class="line"><span class="comment"># num_parallel_calls=tf.data.experimental.AUTOTUNE 根据CPU动态处理 未指定就顺序处理</span></span><br><span class="line"><span class="comment">#shuffle 随机重排</span></span><br><span class="line"><span class="comment">#batch()一次出多少</span></span><br><span class="line"><span class="comment">#prefetch 提前取出多少批batch</span></span><br><span class="line">ds_train = tf.data.Dataset.list_files(<span class="string">&quot;./data/train/*.jpg&quot;</span>) \</span><br><span class="line">           .<span class="built_in">map</span>(load_image, num_parallel_calls=tf.data.experimental.AUTOTUNE) \</span><br><span class="line">           .shuffle(buffer_size = <span class="number">1000</span>).batch(BATCH_SIZE) \</span><br><span class="line">           .prefetch(tf.data.experimental.AUTOTUNE)  </span><br><span class="line"></span><br><span class="line">ds_test = tf.data.Dataset.list_files(<span class="string">&quot;./data/test/*.jpg&quot;</span>) \</span><br><span class="line">           .<span class="built_in">map</span>(load_image, num_parallel_calls=tf.data.experimental.AUTOTUNE) \</span><br><span class="line">           .batch(BATCH_SIZE) \</span><br><span class="line">           .prefetch(tf.data.experimental.AUTOTUNE)  </span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">%config InlineBackend.figure_format = <span class="string">&#x27;svg&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看训练样本</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt </span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">8</span>))  <span class="comment">#8*8 inch</span></span><br><span class="line"><span class="keyword">for</span> i,(img,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(ds_train.unbatch().take(<span class="number">9</span>)):  <span class="comment">#enumerate 组合成索引、数据迭代</span></span><br><span class="line">    ax=plt.subplot(<span class="number">3</span>,<span class="number">3</span>,i+<span class="number">1</span>)</span><br><span class="line">    ax.imshow(img.numpy())</span><br><span class="line">    ax.set_title(<span class="string">&quot;label = %d&quot;</span>%label)</span><br><span class="line">    ax.set_xticks([])</span><br><span class="line">    ax.set_yticks([]) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="/images/DogsVsCats/output_7_0.svg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x,y <span class="keyword">in</span> ds_train.take(<span class="number">1</span>):</span><br><span class="line">    print(x.shape,y.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(125, 227, 227, 3) (125,)
+</code></pre>
+<h2 id="2、定义模型"><a href="#2、定义模型" class="headerlink" title="2、定义模型"></a>2、定义模型</h2><p>AlexNet相较于以前的网络主要引入了Relu激活函数、DropOut层和lrn局部响应</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># LRN层</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRN</span>(<span class="params">layers.Layer</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(LRN, self).__init__()</span><br><span class="line">        self.depth_radius=<span class="number">2</span></span><br><span class="line">        self.bias=<span class="number">1</span></span><br><span class="line">        self.alpha=<span class="number">1e-4</span></span><br><span class="line">        self.beta=<span class="number">0.75</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span>(<span class="params">self,x</span>):</span></span><br><span class="line">        <span class="keyword">return</span> tf.nn.lrn(x,depth_radius=self.depth_radius,</span><br><span class="line">                         bias=self.bias,alpha=self.alpha,</span><br><span class="line">                         beta=self.beta)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">tf.keras.backend.clear_session() <span class="comment">#清空会话</span></span><br><span class="line"></span><br><span class="line">model = models.Sequential()</span><br><span class="line">model.add(layers.Conv2D(<span class="number">96</span>,kernel_size=(<span class="number">11</span>,<span class="number">11</span>),activation=<span class="string">&#x27;relu&#x27;</span>,strides=(<span class="number">4</span>,<span class="number">4</span>),input_shape=(<span class="number">227</span>,<span class="number">227</span>,<span class="number">3</span>)))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>),strides=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(LRN())</span><br><span class="line">model.add(layers.Conv2D(<span class="number">256</span>,kernel_size=(<span class="number">5</span>,<span class="number">5</span>),activation=<span class="string">&#x27;relu&#x27;</span>,strides=(<span class="number">1</span>,<span class="number">1</span>),padding=<span class="string">&#x27;same&#x27;</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>),strides=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(LRN())</span><br><span class="line">model.add(layers.Conv2D(<span class="number">384</span>,kernel_size=(<span class="number">3</span>,<span class="number">3</span>),activation=<span class="string">&#x27;relu&#x27;</span>,strides=(<span class="number">1</span>,<span class="number">1</span>),padding=<span class="string">&#x27;same&#x27;</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">384</span>,kernel_size=(<span class="number">3</span>,<span class="number">3</span>),activation=<span class="string">&#x27;relu&#x27;</span>,strides=(<span class="number">1</span>,<span class="number">1</span>),padding=<span class="string">&#x27;same&#x27;</span>))</span><br><span class="line">model.add(layers.Conv2D(<span class="number">256</span>,kernel_size=(<span class="number">3</span>,<span class="number">3</span>),activation=<span class="string">&#x27;relu&#x27;</span>,strides=(<span class="number">1</span>,<span class="number">1</span>),padding=<span class="string">&#x27;same&#x27;</span>))</span><br><span class="line">model.add(layers.MaxPool2D(pool_size=(<span class="number">3</span>, <span class="number">3</span>),strides=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(layers.Flatten()) <span class="comment"># 不要忘记有一层降为一维</span></span><br><span class="line">model.add(layers.Dense(<span class="number">4096</span>,activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(layers.Dropout(<span class="number">0.25</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">4096</span>,activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">model.add(layers.Dropout(<span class="number">0.25</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">2</span>,activation=<span class="string">&#x27;softmax&#x27;</span>))  <span class="comment">#真实的AlexNet会分成1000类，此处分2类 sofmax来计算概率</span></span><br><span class="line"></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+
+<pre><code>Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d (Conv2D)              (None, 55, 55, 96)        34944     
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 27, 27, 96)        0         
+_________________________________________________________________
+lrn (LRN)                    (None, 27, 27, 96)        0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 27, 27, 256)       614656    
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 13, 13, 256)       0         
+_________________________________________________________________
+lrn_1 (LRN)                  (None, 13, 13, 256)       0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 13, 13, 384)       885120    
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 13, 13, 384)       1327488   
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 13, 13, 256)       884992    
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 6, 6, 256)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 9216)              0         
+_________________________________________________________________
+dense (Dense)                (None, 4096)              37752832  
+_________________________________________________________________
+dropout (Dropout)            (None, 4096)              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 4096)              16781312  
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 4096)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 2)                 8194      
+=================================================================
+Total params: 58,289,538
+Trainable params: 58,289,538
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<h2 id="3、训练模型"><a href="#3、训练模型" class="headerlink" title="3、训练模型"></a>3、训练模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=tf.keras.optimizers.Adam(learning_rate=<span class="number">0.00001</span>),</span><br><span class="line">        loss=<span class="string">&#x27;sparse_categorical_crossentropy&#x27;</span>,</span><br><span class="line">        metrics=[<span class="string">&quot;accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line">checkpoint_save_path=<span class="string">&#x27;./checkpoint/AlexNet/AlexNet-&#123;epoch:02d&#125;.ckpt&#x27;</span></span><br><span class="line"><span class="comment">#tf生成ckpt文件时会同步生成索引表，那么通过判断是否有索引表，就知道有没有保存过参数。</span></span><br><span class="line"><span class="keyword">if</span> os.path.exists(checkpoint_save_path+<span class="string">&#x27;.index&#x27;</span>):</span><br><span class="line">    print(<span class="string">&#x27;----------------load the model--------------&#x27;</span>)</span><br><span class="line">    model.load_weights(checkpoint_save_path)</span><br><span class="line">cp_callback=tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_save_path,</span><br><span class="line">                            save_weights_only=<span class="literal">True</span>,</span><br><span class="line">                            save_best_only=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">history = model.fit(ds_train,epochs= <span class="number">20</span>,validation_data=ds_test,</span><br><span class="line">                    callbacks = [cp_callback],workers = <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Epoch 1/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.6630 - accuracy: 0.5944 - val_loss: 0.6141 - val_accuracy: 0.6615
+Epoch 2/20
+184/184 [==============================] - 40s 220ms/step - loss: 0.5970 - accuracy: 0.6754 - val_loss: 0.5586 - val_accuracy: 0.7040
+Epoch 3/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.5426 - accuracy: 0.7244 - val_loss: 0.5088 - val_accuracy: 0.7505
+Epoch 4/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.4946 - accuracy: 0.7598 - val_loss: 0.4840 - val_accuracy: 0.7735
+Epoch 5/20
+184/184 [==============================] - 40s 220ms/step - loss: 0.4545 - accuracy: 0.7852 - val_loss: 0.4469 - val_accuracy: 0.8055
+Epoch 6/20
+184/184 [==============================] - 40s 220ms/step - loss: 0.4207 - accuracy: 0.8064 - val_loss: 0.4180 - val_accuracy: 0.8100
+Epoch 7/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.3991 - accuracy: 0.8193 - val_loss: 0.4016 - val_accuracy: 0.8250
+Epoch 8/20
+184/184 [==============================] - 41s 220ms/step - loss: 0.3788 - accuracy: 0.8309 - val_loss: 0.3908 - val_accuracy: 0.8315
+Epoch 9/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.3587 - accuracy: 0.8427 - val_loss: 0.3733 - val_accuracy: 0.8375
+Epoch 10/20
+184/184 [==============================] - 38s 207ms/step - loss: 0.3387 - accuracy: 0.8539 - val_loss: 0.3860 - val_accuracy: 0.8345
+Epoch 11/20
+184/184 [==============================] - 40s 220ms/step - loss: 0.3273 - accuracy: 0.8576 - val_loss: 0.3498 - val_accuracy: 0.8475
+Epoch 12/20
+184/184 [==============================] - 38s 207ms/step - loss: 0.3064 - accuracy: 0.8676 - val_loss: 0.3671 - val_accuracy: 0.8380
+Epoch 13/20
+184/184 [==============================] - 38s 208ms/step - loss: 0.2931 - accuracy: 0.8762 - val_loss: 0.3501 - val_accuracy: 0.8495
+Epoch 14/20
+184/184 [==============================] - 40s 220ms/step - loss: 0.2737 - accuracy: 0.8864 - val_loss: 0.3361 - val_accuracy: 0.8540
+Epoch 15/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.2694 - accuracy: 0.8890 - val_loss: 0.3311 - val_accuracy: 0.8585
+Epoch 16/20
+184/184 [==============================] - 38s 208ms/step - loss: 0.2557 - accuracy: 0.8938 - val_loss: 0.3388 - val_accuracy: 0.8565
+Epoch 17/20
+184/184 [==============================] - 40s 219ms/step - loss: 0.2362 - accuracy: 0.9030 - val_loss: 0.3160 - val_accuracy: 0.8680
+Epoch 18/20
+184/184 [==============================] - 38s 207ms/step - loss: 0.2184 - accuracy: 0.9106 - val_loss: 0.3692 - val_accuracy: 0.8515
+Epoch 19/20
+184/184 [==============================] - 38s 207ms/step - loss: 0.2085 - accuracy: 0.9160 - val_loss: 0.3198 - val_accuracy: 0.8710
+Epoch 20/20
+184/184 [==============================] - 41s 222ms/step - loss: 0.1909 - accuracy: 0.9239 - val_loss: 0.3019 - val_accuracy: 0.8705
+</code></pre>
+<h2 id="4、评估模型"><a href="#4、评估模型" class="headerlink" title="4、评估模型"></a>4、评估模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">%config InlineBackend.figure_format = <span class="string">&#x27;svg&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_metric</span>(<span class="params">history, metric</span>):</span></span><br><span class="line">    train_metrics = history.history[metric]</span><br><span class="line">    val_metrics = history.history[<span class="string">&#x27;val_&#x27;</span>+metric]</span><br><span class="line">    epochs = <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(train_metrics) + <span class="number">1</span>)</span><br><span class="line">    plt.plot(epochs, train_metrics, <span class="string">&#x27;bo--&#x27;</span>)</span><br><span class="line">    plt.plot(epochs, val_metrics, <span class="string">&#x27;ro-&#x27;</span>)</span><br><span class="line">    plt.title(<span class="string">&#x27;Training and validation &#x27;</span>+ metric)</span><br><span class="line">    plt.xlabel(<span class="string">&quot;Epochs&quot;</span>)</span><br><span class="line">    plt.ylabel(metric)</span><br><span class="line">    plt.legend([<span class="string">&quot;train_&quot;</span>+metric, <span class="string">&#x27;val_&#x27;</span>+metric])</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_metric(history,<span class="string">&quot;loss&quot;</span>) <span class="comment">#结果看可以再练练</span></span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="/images/DogsVsCats/output_16_0.svg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_metric(history,<span class="string">&quot;accuracy&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="/images/DogsVsCats/output_17_0.svg"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#可以使用evaluate对数据进行评估</span></span><br><span class="line">val_loss,val_accuracy = model.evaluate(ds_test,workers=<span class="number">4</span>)</span><br><span class="line">print(val_loss,val_accuracy)</span><br></pre></td></tr></table></figure>
+
+<pre><code>16/16 [==============================] - 2s 144ms/step - loss: 0.3019 - accuracy: 0.8705
+0.3018629252910614 0.8705000281333923
+</code></pre>
+<h2 id="5、使用模型"><a href="#5、使用模型" class="headerlink" title="5、使用模型"></a>5、使用模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">perpareImage</span>(<span class="params">img,sizes=(<span class="params">-<span class="number">1</span>,<span class="number">227</span>,<span class="number">227</span>,<span class="number">3</span></span>)</span>):</span></span><br><span class="line">  img = tf.reshape(img,shape=sizes)</span><br><span class="line">  <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i,(img,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(ds_test.unbatch().take(<span class="number">1</span>)):</span><br><span class="line">  img=tf.reshape(img,shape=(-<span class="number">1</span>,<span class="number">227</span>,<span class="number">227</span>,<span class="number">3</span>))</span><br><span class="line">  p=model.predict(img)</span><br><span class="line">  print(p)</span><br><span class="line">  p=tf.argmax(p,<span class="number">1</span>)</span><br><span class="line">  print(p)</span><br><span class="line">  print(p.shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[[0.91607434 0.08392565]]
+tf.Tensor([0], shape=(1,), dtype=int64)
+(1,)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">%config InlineBackend.figure_format = <span class="string">&#x27;svg&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看训练样本</span></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt </span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">8</span>))  <span class="comment">#8*8 inch</span></span><br><span class="line"><span class="keyword">for</span> i,(img,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(ds_test.unbatch().take(<span class="number">9</span>)):  <span class="comment">#enumerate 组合成索引、数据迭代</span></span><br><span class="line">    ax=plt.subplot(<span class="number">3</span>,<span class="number">3</span>,i+<span class="number">1</span>)</span><br><span class="line">    ax.imshow(img.numpy())</span><br><span class="line">    predict = model.predict(perpareImage(img))</span><br><span class="line">    ax.set_title(<span class="string">&quot;predict=%d,label=%d&quot;</span>%(tf.argmax(predict,<span class="number">1</span>),label))</span><br><span class="line">    ax.set_xticks([])</span><br><span class="line">    ax.set_yticks([]) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="/images/DogsVsCats/output_22_0.svg"></p>
+<h2 id="6、保存模型"><a href="#6、保存模型" class="headerlink" title="6、保存模型"></a>6、保存模型</h2><p>tensorflow原生保存</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存模型结构与模型参数到文件,该方式保存的模型具有跨平台性便于部署</span></span><br><span class="line"></span><br><span class="line">model.save(<span class="string">&#x27;./model/tf_AlexNet_Model&#x27;</span>, save_format=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line">print(<span class="string">&#x27;export saved model.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">model_loaded = tf.keras.models.load_model(<span class="string">&#x27;./model/tf_AlexNet_Model&#x27;</span>)</span><br><span class="line">model_loaded.evaluate(ds_test)</span><br></pre></td></tr></table></figure>
+
+<pre><code>WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/python/training/tracking/tracking.py:111: Model.state_updates (from tensorflow.python.keras.engine.training) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+WARNING:tensorflow:From /usr/local/lib/python3.6/dist-packages/tensorflow/python/training/tracking/tracking.py:111: Layer.updates (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+INFO:tensorflow:Assets written to: ./model/tf_AlexNet_Model/assets
+export saved model.
+16/16 [==============================] - 2s 147ms/step - loss: 0.3019 - accuracy: 0.5155
+
+
+
+
+
+[0.301862895488739, 0.515500009059906]
+</code></pre>
+<h2 id="repo"><a href="#repo" class="headerlink" title="repo"></a>repo</h2><p><a target="_blank" rel="noopener" href="https://github.com/qxdn/DogsVsCats">DogsVsCats</a></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>踩的坑有点点多，比如搭建网络时候忘记摊平，预测的时候因为形状不对卡了半天，CPU训练的时候loss和准确度不变，差点以为失败了，不过最后看来还算成功吧。赞美Google Colab。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/tensorflow/" rel="tag"># tensorflow</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/AlexNet/" rel="tag"># AlexNet</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/19/energySaving/" rel="prev" title="节能减排">
+      <i class="fa fa-chevron-left"></i> 节能减排
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/23/upgradeWSL2/" rel="next" title="升级到WSL2">
+      升级到WSL2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet-%E5%AE%9E%E7%8E%B0%E7%8C%AB%E7%8B%97%E5%A4%A7%E6%88%98"><span class="nav-number">1.</span> <span class="nav-text">AlexNet 实现猫狗大战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">1、数据准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">2、定义模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">3、训练模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E8%AF%84%E4%BC%B0%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">4、评估模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">5、使用模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">6、保存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#repo"><span class="nav-number">9.</span> <span class="nav-text">repo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">10.</span> <span class="nav-text">后记</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qxdn"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qxdn</p>
+  <div class="site-description" itemprop="description">钱旭的博客 | qxdn Blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qxdn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qxdn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1464238196@qq.com" title="E-Mail → mailto:1464238196@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qxdn</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">28k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-604eef74c3e2e9d1" async="async"></script>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://qxdn-blog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://qianxu.run/2020/10/22/DogsVsCatsAlexNet/";
+    this.page.identifier = "2020/10/22/DogsVsCatsAlexNet/";
+    this.page.title = "用AlexNet实现DogsVsCats";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://qxdn-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
