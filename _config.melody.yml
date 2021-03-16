@@ -97,7 +97,7 @@ fireworks: false
 
 # Analysis
 # ---------------
-baidu_analytics:
+baidu_analytics: 0f5e7bc19ca6915a2f88baf2abe1f71e
 
 google_analytics: UA-180828196-1
 
@@ -290,7 +290,7 @@ busuanzi:
 # canvas_ribbon
 # See: https://github.com/hustcc/ribbon.js
 canvas_ribbon:
-  enable: false
+  enable: true
   size: 150
   alpha: 0.6
   zIndex: -1
@@ -325,7 +325,7 @@ google_adsense:
 
 # Google Webmaster tools verification setting
 # See: https://www.google.com/webmasters/
-google_site_verification:
+google_site_verification: sE0IRsQQq6gMmEbOChuQcoeyBGCWJ3TXQ5Rh79OTKcU
 
 # Bing Webmaster tools verification setting
 # See: https://www.bing.com/webmaster/
@@ -337,7 +337,7 @@ bing_site_verification:
 
 # Baidu Webmaster tools verification setting
 # See: https://ziyuan.baidu.com/site/
-baidu_site_verification:
+baidu_site_verification: zVQg9ZxktH8sFIiV
 
 # 360 Webmaster tools verification setting
 # see http://zhanzhang.so.com/
