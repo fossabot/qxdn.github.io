@@ -312,7 +312,7 @@ follow:
   text: 'Follow Me'
 
 # controls the sidebar showing or hidden in different pages
-sidebar_display: all # all/index/post/index-none/post-none/hidden
+sidebar_display: post # all/index/post/index-none/post-none/hidden
 
 # Ads
 # ---------------
