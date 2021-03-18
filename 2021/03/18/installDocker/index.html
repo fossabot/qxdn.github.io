@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="win10家庭版下安装docker"><meta name="keywords" content="docker"><meta name="author" content="qxdn"><meta name="copyright" content="qxdn"><title>win10家庭版下安装docker | qxdn Blog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f5e7bc19ca6915a2f88baf2abe1f71e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><link rel="dns-prefetch" href="https://www.google-analytics.com"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-180828196-1', 'auto');
+ga('send', 'pageview');</script><meta name="google-site-verification" content="google6acbabd7b6120978.html"><meta name="baidu-site-verification" content="zVQg9ZxktH8sFIiV"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.4.0'
+} </script><!-- hexo injector head_end start --><script src="https://cdn.jsdelivr.net/gh/qxdn/live2d-widget@latest/autoload.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%A6%81%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text"> 系统要求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text"> 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF"><span class="toc-number">2.1.</span> <span class="toc-text"> 错误</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%A1%A3%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text"> 参考档案</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/avatar.jpg"></div><div class="author-info__name text-center">qxdn</div><div class="author-info__description text-center">qxdn Blog | 钱旭的博客</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/qxdn">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">9</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">20</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">qxdn的朋友们</div><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/WaterHyacinthInNANHU">WaterHyacinthInNANHU</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/while0l1">while0l1</a><a class="author-info-links__name text-center" target="_blank" rel="noopener" href="https://github.com/Markhng">Markhng</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/images/installDocker/top.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">qxdn Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/about">About</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">win10家庭版下安装docker</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2021-03-18</time><span class="post-meta__separator">|</span><i class="fa fa-comment-o post-meta__icon" aria-hidden="true"></i><a href="/2021/03/18/installDocker/#disqus_thread"><span class="disqus-comment-count" data-disqus-identifier="2021/03/18/installDocker/"></span></a><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">398</span><span class="post-meta__separator">|</span><span>Reading time: 1 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>因为装软件、装环境老是折腾，就开始思考各个生产环境之间隔离或者直接使用他人配好的环境。因而想到了人们常说的docker。因此打算安装来体验一下</p>
+<span id="more"></span>
+<h1 id="系统要求"><a class="markdownIt-Anchor" href="#系统要求"></a> 系统要求</h1>
+<p>根据官方文档，<code>Docker Desktop on Windows</code>需要win10专业版、企业版或者教育版(Build 17134 or later)。而我的电脑为win10家庭版，因此选择另一套方案。</p>
+<p>win10家庭版的系统要求如下</p>
+<ul>
+<li>win10 v1903版本或者更高</li>
+<li>开启WSL2
+<ul>
+<li>64位处理器且有SLAT指令</li>
+<li>4G内存</li>
+<li>BIOS开启虚拟化</li>
+</ul>
+</li>
+<li>下载并升级<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package">linux内核包</a></li>
+</ul>
+<h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h1>
+<ol>
+<li>下载<a target="_blank" rel="noopener" href="https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe">Docker Desktop Installer</a>并双击运行</li>
+<li>确保WSL2那个特性打开<br />
+<img src="/images/installDocker/dockerInstallerConfig.png" alt="enable WSL2" /></li>
+<li>跟着安装帮助即可</li>
+</ol>
+<h2 id="错误"><a class="markdownIt-Anchor" href="#错误"></a> 错误</h2>
+<p>我就知道安装没有这么容易，果然碰到了问题。<br />
+<img src="/images/installDocker/error.png" alt="error" /><br />
+通过<code>everything</code>我找到了<code>install-log.txt</code>。然而里面的关键信息就这么点。明明已经用管理员运行了，但是还是未授权。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Exception type: System.Exception, Exception message: Component CommunityInstaller.AutoStartAction failed: 尝试执行未经授权的操作。, StackTrace:</span><br><span class="line">   在 CommunityInstaller.InstallWorkflow.&lt;DoHandleD4WPackageAsync&gt;d__29.MoveNext()</span><br><span class="line">--- 引发异常的上一位置中堆栈跟踪的末尾 ---</span><br><span class="line">   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()</span><br><span class="line">   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)</span><br><span class="line">   在 CommunityInstaller.InstallWorkflow.&lt;DoProcessAsync&gt;d__23.MoveNext()</span><br></pre></td></tr></table></figure>
+<p>就在我一筹莫展的时候，我看到了一个服务器部署win10服务未授权解决的文章，说是360阻断了。于是我尝试将我的联想电脑管家关闭，果然安装成功了。<br />
+<img src="/images/installDocker/docker.png" alt="docker" /></p>
+<h1 id="参考档案"><a class="markdownIt-Anchor" href="#参考档案"></a> 参考档案</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/install/">docker for win10 pro</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/install-windows-home/">docker for win10 home</a></p>
+<p><a href="https://qianxu.run/2020/10/23/upgradeWSL2/">WSL2安装</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq736150416/article/details/80137675">灵感</a></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">qxdn</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://qianxu.run/2021/03/18/installDocker/">https://qianxu.run/2021/03/18/installDocker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/docker/">docker</a></div><div class="addthis_inline_share_toolbox pull-right"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-604eef74c3e2e9d1" async></script><nav id="pagination"><div class="next-post pull-right"><a href="/2021/03/04/builddarknet/"><span>毕业设计（二）darknet编译</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'https://qianxu.run/2021/03/18/installDocker/';
+  this.page.identifier = '2021/03/18/installDocker/';
+  this.page.title = 'win10家庭版下安装docker';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'qxdn-blog' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script><script id="dsq-count-scr" src="https://qxdn-blog.disqus.com/count.js" async></script></div></div><footer class="footer-bg" style="background-image: url(/images/installDocker/top.png)"><div class="layout" id="footer"><div class="copyright">&copy;2020 - 2021 By qxdn</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
