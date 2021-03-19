@@ -9,6 +9,9 @@
 <p>Hello World</p>
 <p>这里是<a href="https://github.com/qxdn">qxdn</a>的Blog，也是第一篇Blog</p>
 ]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
       <tags>
         <tag>生活</tag>
       </tags>
@@ -48,6 +51,9 @@
 <p>在省赛和国赛的时候都打了全十环（不得不说运气真好），然后公费去上海同济玩了几天。最终结果就是获得了一个H题的国一了，不算国家奖学金的话，这是我获得的第一个竞赛国奖。<br />
 <img src="/images/electronicDesignContest/edc.jpg" alt="同济现场" /></p>
 ]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
       <tags>
         <tag>电赛</tag>
         <tag>C</tag>
@@ -72,6 +78,9 @@
 <h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
 <p>  这些就是我们组在电赛期间的一些准备内容，代码主要在<a href="https://github.com/while0l1/stm32f4_modules">代码1</a>和<a href="https://github.com/qxdn/MYDS">代码2</a>和<a href="https://github.com/qxdn/BIg-Ivan">训练代码</a></p>
 ]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
       <tags>
         <tag>电赛</tag>
         <tag>C</tag>
@@ -97,6 +106,9 @@
 <h2 id="结果"><a class="markdownIt-Anchor" href="#结果"></a> 结果</h2>
 <p>最后还是只得了一个国三，如果再做的好一点也许就能过了网申冲击国二、国一了。</p>
 ]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
       <tags>
         <tag>C</tag>
         <tag>C++</tag>
@@ -260,6 +272,9 @@ export saved model.
 <h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
 <p>踩的坑有点点多，比如搭建网络时候忘记摊平，预测的时候因为形状不对卡了半天，CPU训练的时候loss和准确度不变，差点以为失败了，不过最后看来还算成功吧。赞美Google Colab。</p>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
       <tags>
         <tag>python</tag>
         <tag>tensorflow</tag>
@@ -304,6 +319,9 @@ export saved model.
 <h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
 <p>VMware老版本与Hyper-V冲突，得找个时间去更新到最新版本兼容</p>
 ]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
       <tags>
         <tag>Windows</tag>
         <tag>Linux</tag>
@@ -342,6 +360,9 @@ export saved model.
 <h2 id="后记"><a class="markdownIt-Anchor" href="#后记"></a> 后记</h2>
 <p>环境的搭建就到此为止，安装并不难，只是我没想到我尽然会连镜像源都下不动😩。后续视情况可能会使用GPU服务器，但是现在先在本地收集数据集和预先学习。</p>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
       <tags>
         <tag>机器学习</tag>
         <tag>毕业设计</tag>
@@ -387,8 +408,47 @@ export saved model.
 <p><a href="https://qianxu.run/2020/10/23/upgradeWSL2/">WSL2安装</a></p>
 <p><a href="https://blog.csdn.net/qq736150416/article/details/80137675">灵感</a></p>
 ]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
       <tags>
         <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MinGW编译C++无法输出string</title>
+    <url>/2021/03/19/mingw64problem/</url>
+    <content><![CDATA[<p>在调试程序的时候遇到了一个奇葩的问题，C++无法使用string。最后发现居然是MinGW64的问题</p>
+<span id="more"></span>
+<h1 id="起因"><a class="markdownIt-Anchor" href="#起因"></a> 起因</h1>
+<p>在帮助别人调试<a href="https://github.com/hediet/vscode-debug-visualizer">vscode-debug-visualizer</a>这个插件的时候，遇到了无法出结果的问题。经过一系列定位后发现，居然是使用了string就无法运行，而编译不会出错。</p>
+<h1 id="测试程序"><a class="markdownIt-Anchor" href="#测试程序"></a> 测试程序</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//main.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// visualize `myGraphJson`!</span></span><br><span class="line">    <span class="built_in">string</span> myGraphJson = <span class="string">&quot;&#123;\&quot;kind\&quot;:&#123;\&quot;graph\&quot;:true&#125;,&quot;</span></span><br><span class="line">        <span class="string">&quot;\&quot;nodes\&quot;:[&#123;\&quot;id\&quot;:\&quot;1\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;2\&quot;&#125;],&quot;</span></span><br><span class="line">        <span class="string">&quot;\&quot;edges\&quot;:[&#123;\&quot;from\&quot;:\&quot;1\&quot;,\&quot;to\&quot;:\&quot;2\&quot;&#125;]&#125;&quot;</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; myGraphJson;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="错误现象"><a class="markdownIt-Anchor" href="#错误现象"></a> 错误现象</h1>
+<p>使用编译指令如下</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">g++ <span class="literal">-g</span> main.c <span class="literal">-o</span> main.exe</span><br></pre></td></tr></table></figure>
+<p>结果正常，运行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.\main.exe</span><br></pre></td></tr></table></figure>
+<p>输出为空</p>
+<p>使用gdb进行debug。错误如下</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ERROR: Unable to <span class="built_in">start</span> debugging. Unexpected GDB output from command <span class="string">&quot;-exec-run&quot;</span>. During startup program exited with code <span class="number">0</span>xc0000139.</span><br></pre></td></tr></table></figure>
+<h1 id="解决方案"><a class="markdownIt-Anchor" href="#解决方案"></a> 解决方案</h1>
+<p>在<a href="https://stackoverflow.com/questions/18668003/the-procedure-entry-point-gxx-personality-v0-could-not-be-located">stackoverflow</a>上找到解决方案。</p>
+<p>从<code>MinGW</code>的安装目录里面找到<code>bin</code>文件夹。将里面的<code>libstdc++-6.dll</code>拷贝到工作目录。目录结构如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+ .vscode</span><br><span class="line">    launch.json</span><br><span class="line">    tasks.json</span><br><span class="line">libstdc++-6.dll</span><br><span class="line">main.cpp</span><br></pre></td></tr></table></figure>
+<p>再次进行编译、运行</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">g++ <span class="literal">-g</span> main.c <span class="literal">-o</span> main.exe</span><br><span class="line">.\main.exe</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">&#123;<span class="string">&quot;kind&quot;</span>:&#123;<span class="string">&quot;graph&quot;</span>:true&#125;,<span class="string">&quot;nodes&quot;</span>:[&#123;<span class="string">&quot;id&quot;</span>:<span class="string">&quot;1&quot;</span>&#125;,&#123;<span class="string">&quot;id&quot;</span>:<span class="string">&quot;2&quot;</span>&#125;],<span class="string">&quot;edges&quot;</span>:[&#123;<span class="string">&quot;from&quot;</span>:<span class="string">&quot;1&quot;</span>,<span class="string">&quot;to&quot;</span>:<span class="string">&quot;2&quot;</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<p>gdb的debug结果正常</p>
+<h1 id="吐槽"><a class="markdownIt-Anchor" href="#吐槽"></a> 吐槽</h1>
+<p>这个问题在7年前就被提出了，居然现在还有。MinGW真是坑啊，用了环境变量也没用。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -439,6 +499,9 @@ export saved model.
 <h2 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h2>
 <p>win10版本的darknet gpu版本安装完成。道路坎坷，记录下踩过的坑</p>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
       <tags>
         <tag>机器学习</tag>
         <tag>毕业设计</tag>
