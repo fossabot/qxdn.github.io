@@ -9,6 +9,7 @@ tags:
     - 毕业设计
     - yolo
     - darknet
+categories: 机器学习
 ---
 
 

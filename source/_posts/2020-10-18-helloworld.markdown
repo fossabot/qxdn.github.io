@@ -7,6 +7,7 @@ author: "qxdn"
 top_img: https://cdn.jsdelivr.net/gh/qxdn/qxdn.github.io@latest/source/images/post-helloworld/helloworld-bg.jpg
 tags:
     - 生活
+categories: 生活
 ---
 
 ## 前言

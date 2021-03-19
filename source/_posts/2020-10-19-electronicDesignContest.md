@@ -11,6 +11,7 @@ tags:
     - C++
     - 软件
     - 硬件
+categories: C
 ---
 
 

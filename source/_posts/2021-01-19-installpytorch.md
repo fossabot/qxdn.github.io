@@ -8,6 +8,7 @@ tags:
     - 机器学习
     - 毕业设计
     - yolo
+categories: 机器学习
 ---
 
 

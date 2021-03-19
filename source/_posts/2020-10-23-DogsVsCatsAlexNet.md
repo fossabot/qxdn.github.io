@@ -10,6 +10,7 @@ tags:
     - tensorflow
     - 机器学习
     - AlexNet
+categories: 机器学习
 ---
 
 ## AlexNet 实现猫狗大战
