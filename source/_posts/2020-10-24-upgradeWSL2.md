@@ -9,7 +9,7 @@ tags:
     - Windows
     - Linux
     - WSL
-categories: linux
+categories: Linux
 ---
 
 
