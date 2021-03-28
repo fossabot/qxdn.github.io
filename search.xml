@@ -320,7 +320,7 @@ export saved model.
 <p>VMware老版本与Hyper-V冲突，得找个时间去更新到最新版本兼容</p>
 ]]></content>
       <categories>
-        <category>linux</category>
+        <category>Linux</category>
       </categories>
       <tags>
         <tag>Windows</tag>
@@ -412,6 +412,7 @@ export saved model.
         <category>docker</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>docker</tag>
       </tags>
   </entry>
@@ -477,6 +478,105 @@ export saved model.
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tmux vs screen</title>
+    <url>/2021/03/28/tmux-vs-screen/</url>
+    <content><![CDATA[<p>本文将对tmux与screen命令的使用进行比较，并简单的进行对比。</p>
+<p>封面图片来源《妄想破绽》</p>
+<span id="more"></span>
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>你是否有过在SSH连接远程终端的时候，需要同时后台运行多个程序，抑或是需要开启多个终端进行观察。那么你需要一个终端复用程序，比如<code>tmux</code>或者<code>screen</code>。<code>tmux</code>和<code>screen</code>命令差不多，都是终端复用程序，你还可以在SSH断开后重新连接端口继续执行命令。</p>
+<h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h1>
+<p>如果你的Ubuntu没有<code>tmux</code>或者<code>screen</code>，那么你可以使用如下命令进行安装</p>
+<p><code>tmux</code>:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install tmux</span><br></pre></td></tr></table></figure>
+<p><code>screen</code>:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install screen</span><br></pre></td></tr></table></figure>
+<h1 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h1>
+<h2 id="tmux"><a class="markdownIt-Anchor" href="#tmux"></a> tmux</h2>
+<h3 id="简单创建"><a class="markdownIt-Anchor" href="#简单创建"></a> 简单创建</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux</span><br></pre></td></tr></table></figure>
+<p><img src="/images/tmux-vs-screen/simple-tmux.png" alt="效果图" /></p>
+<p>[0]0:zsh* : 意味着现在是session name为0，session number为0，环境为zsh，*意味着当前窗口</p>
+<p>“DESKTOP-7A4A8RD” : hostname</p>
+<p>18:59 28-Mar-21 : 当前时间</p>
+<h3 id="创建一个有名字的session"><a class="markdownIt-Anchor" href="#创建一个有名字的session"></a> 创建一个有名字的session</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux new -s &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+<p>此时可以看到原本[0]里面的0变成了设置的session-name</p>
+<h3 id="竖直分离窗口"><a class="markdownIt-Anchor" href="#竖直分离窗口"></a> 竖直分离窗口</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>%</code><br />
+<img src="/images/tmux-vs-screen/tmux-vertically.png" alt="效果图" /></p>
+<h3 id="水平分离窗口"><a class="markdownIt-Anchor" href="#水平分离窗口"></a> 水平分离窗口</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>&quot;</code><br />
+<img src="/images/tmux-vs-screen/tmux-horizontally.png" alt="效果图" /></p>
+<h3 id="展示会话编号"><a class="markdownIt-Anchor" href="#展示会话编号"></a> 展示会话编号</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>q</code><br />
+<img src="/images/tmux-vs-screen/tmux-number.png" alt="效果图" /></p>
+<h3 id="切换窗口"><a class="markdownIt-Anchor" href="#切换窗口"></a> 切换窗口</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>o</code></p>
+<h3 id="关闭窗口"><a class="markdownIt-Anchor" href="#关闭窗口"></a> 关闭窗口</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>x</code>或者<code>ctrl+d</code></p>
+<h3 id="列出已有tmux"><a class="markdownIt-Anchor" href="#列出已有tmux"></a> 列出已有tmux</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>s</code><br />
+<img src="/images/tmux-vs-screen/tmux-list.png" alt="效果图" /></p>
+<h3 id="分离会话"><a class="markdownIt-Anchor" href="#分离会话"></a> 分离会话</h3>
+<p>在<code>tmux</code>窗口中按下<code>ctrl+b</code>然后再按下<code>d</code>或者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux detach</span><br></pre></td></tr></table></figure>
+<h3 id="重连会话"><a class="markdownIt-Anchor" href="#重连会话"></a> 重连会话</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux attach -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="杀死会话"><a class="markdownIt-Anchor" href="#杀死会话"></a> 杀死会话</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tmux kill-session -t &lt;session-name&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="screen"><a class="markdownIt-Anchor" href="#screen"></a> screen</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen [-AmRvx -ls -wipe][-d &lt;作业名称&gt;][-h &lt;行数&gt;][-r &lt;作业名称&gt;][-s &lt;shell&gt;][-S &lt;作业名称&gt;]</span><br></pre></td></tr></table></figure>
+<p>wsl中使用<code>screen</code>提示权限不足可以参考本文末尾的<a href="#wsl%E4%B8%AD%E6%8F%90%E7%A4%BAscreen%E9%9C%80%E8%A6%81root%E6%9D%83%E9%99%90%E8%A7%A3%E5%86%B3">wsl中提示screen需要root权限解决</a></p>
+<h3 id="创建简单窗口"><a class="markdownIt-Anchor" href="#创建简单窗口"></a> 创建简单窗口</h3>
+<p>在<code>screen</code>窗口中按下<code>ctrl+a</code>然后再按下<code>c</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen</span><br></pre></td></tr></table></figure>
+<p><img src="/images/tmux-vs-screen/simple-screen.png" alt="效果图" /></p>
+<h3 id="创建终端并运行命令"><a class="markdownIt-Anchor" href="#创建终端并运行命令"></a> 创建终端并运行命令</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen vi main.c</span><br></pre></td></tr></table></figure>
+<p><img src="/images/tmux-vs-screen/screen-simple-command.png" alt="效果图" /></p>
+<h3 id="离开screen终端"><a class="markdownIt-Anchor" href="#离开screen终端"></a> 离开screen终端</h3>
+<p>在<code>screen</code>窗口中按下<code>ctrl+a</code>然后再按下<code>d</code></p>
+<h3 id="显示已经创建的screen"><a class="markdownIt-Anchor" href="#显示已经创建的screen"></a> 显示已经创建的screen</h3>
+<p>在<code>screen</code>窗口中按下<code>ctrl+a</code>然后再按下<code>&quot;</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen -ls</span><br></pre></td></tr></table></figure>
+<p><img src="/images/tmux-vs-screen/screen-list.png" alt="效果图" /><br />
+<img src="/images/tmux-vs-screen/screen-list2.png" alt="效果图" /></p>
+<h3 id="重新连接会话"><a class="markdownIt-Anchor" href="#重新连接会话"></a> 重新连接会话</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">screen -r &lt;id&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="水平分割"><a class="markdownIt-Anchor" href="#水平分割"></a> 水平分割</h3>
+<p>在<code>screen</code>窗口中按下<code>ctrl+a</code>然后再按下<code>|</code>，只会分割而不会创建新的session。使用<code>ctrl+a</code>然后按下<code>tab</code>切换窗口，<code>ctrl+a</code>然后按下<code>c</code>新建session。下同<br />
+<img src="/images/tmux-vs-screen/screen-horizontally.png" alt="效果图" /></p>
+<h3 id="screen竖直分割"><a class="markdownIt-Anchor" href="#screen竖直分割"></a> screen竖直分割</h3>
+<p>在<code>screen</code>窗口中按下<code>ctrl+a</code>然后再按下<code>S</code>。注意大写<br />
+<img src="/images/tmux-vs-screen/screen-vertically.png" alt="效果图" /></p>
+<h3 id="分割中切换窗口"><a class="markdownIt-Anchor" href="#分割中切换窗口"></a> 分割中切换窗口</h3>
+<p>使用<code>ctrl+a</code>然后按下<code>tab</code>切换窗口</p>
+<h3 id="杀死session"><a class="markdownIt-Anchor" href="#杀死session"></a> 杀死session</h3>
+<p>使用<code>ctrl+d</code></p>
+<h1 id="对比"><a class="markdownIt-Anchor" href="#对比"></a> 对比</h1>
+<p><code>screen</code>和<code>tmux</code>都是终端复用，大体的功能上都差不多，<code>tmux</code>是BSD协议，<code>screen</code>是GNU协议。从个人感觉上<code>tmux</code>对个人更友好，在分割窗口 时候自动创建新会话，同时有状态条显示，还可以自动命名窗口，这是<code>screen</code>没有的。<code>screen</code>可以和其他用户分享会话，而<code>tmux</code>不行。</p>
+<h1 id="wsl中提示screen需要root权限解决"><a class="markdownIt-Anchor" href="#wsl中提示screen需要root权限解决"></a> wsl中提示screen需要root权限解决</h1>
+<p>参考<a href="https://superuser.com/questions/1195962/cannot-make-directory-var-run-screen-permission-denied">superuser</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir ~/.screen &amp;&amp; chmod 700 ~/.screen</span><br></pre></td></tr></table></figure>
+<p>可以把下面这一句放进<code>~/.bashrc</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> SCREENDIR=<span class="variable">$HOME</span>/.screen</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h1>
+<p><a href="https://linuxhint.com/tmux_vs_screen/">Tmux vs. Screen tool comparison</a><br />
+<a href="https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/">How to Use tmux on Linux (and Why It’s Better Than Screen)</a><br />
+<a href="https://blog.csdn.net/yuanxinfei920/article/details/78712990">使用tmux分屏（既可以左右分屏，也可以上下分屏）</a><br />
+<a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html">Tmux 使用教程</a><br />
+<a href="https://www.runoob.com/linux/linux-comm-screen.html">Linux screen命令</a><br />
+<a href="https://superuser.com/questions/1195962/cannot-make-directory-var-run-screen-permission-denied">Cannot make directory ‘/var/run/screen’: Permission denied</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
